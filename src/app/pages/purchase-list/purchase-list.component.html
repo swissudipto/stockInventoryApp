@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-12 text-end">
+            <button class="btn btn-sm btn-success" routerLink="/newpurchase">New Purchase</button>
+        </div>
+
+</div>
+<div class="row">
+<div class="col-3" *ngFor="let item of purchase">
+  <div class="profile-card-4 text-center">
+    <div class="profile-content">
+      <div class="profile-name">
+        John Doe
+        <p>@johndoedesigner</p>
+      </div>
+      <div class="profile-description">
+        {{item.productname}}
+      </div>
+      <div class="row">
+      
+        <div class="col-sm-4">
+          <div class="profile-overview">
+            <p>Quantity</p>
+            <h4>{{item.quantity}}</h4>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="profile-overview">
+            <p>Date</p>
+            <h4>{{item.purchasedate}}</h4>
+          </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="profile-overview">
+              <p>Amount</p>
+              <h4>{{item.invoiceamount}}</h4>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
