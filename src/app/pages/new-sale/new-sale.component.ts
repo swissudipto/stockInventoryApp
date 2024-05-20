@@ -28,7 +28,7 @@ export class NewSaleComponent {
 
   getAllProduct() {
     this.service.getallproducts().subscribe((data)=>{
-      this.productList = data.result;
+      this.productList = data;
       console.warn(this.productList);
     })  
   }

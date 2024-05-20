@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { product } from 'src/app/Interfaces/product.interface';
+import { purchase } from 'src/app/Interfaces/puchase.interface';
 import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
@@ -9,16 +11,17 @@ import { InventoryService } from 'src/app/services/inventory.service';
 })
 export class NewPurchaseComponent {
 
-  purchaseObj: any = {
-    "purchaseId": 0,
-    "purchaseDate": "2023-09-23T11:00:36.277Z",
+  purchaseObj: purchase = {
+    "id": "",
+    "purchaseDate": new Date(), 
+    "purchaseId": "",
     "productId": 0,
     "quantity": 0,
     "supplierName": "",
     "invoiceAmount": 0,
     "invoiceNo": ""
   };
-  productList: any[] = [];
+  productList: product[] = [];
 
   constructor(private service : InventoryService){
 
@@ -29,7 +32,7 @@ export class NewPurchaseComponent {
 
   getAllProduct() {
     this.service.getallproducts().subscribe((data)=>{
-      this.productList = data.result;
+      this.productList = data;
       console.warn(this.productList);
     })  
   }

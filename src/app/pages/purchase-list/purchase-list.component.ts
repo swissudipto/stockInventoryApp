@@ -1,4 +1,5 @@
 import { Component ,OnInit } from '@angular/core';
+import { purchase } from 'src/app/Interfaces/puchase.interface';
 import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
@@ -8,8 +9,9 @@ import { InventoryService } from 'src/app/services/inventory.service';
 })
 export class PurchaseListComponent implements OnInit {
 
-purchase:any;
-  constructor(private service : InventoryService){
+purchase:purchase[]=[];
+  constructor(private service : InventoryService)
+  {
   }
 
 
@@ -20,7 +22,7 @@ purchase:any;
 
   getAllPurchase(){
     this.service.getallpurchase().subscribe((data)=>{
-      this.purchase = data.result;
+      this.purchase = data;
       console.warn(this.purchase);
     })
   }

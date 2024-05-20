@@ -13,7 +13,7 @@
         <p>@johndoedesigner</p>
       </div>
       <div class="profile-description">
-        {{item.productname}}
+        {{item.productId}}
       </div>
       <div class="row">
       
@@ -26,13 +26,13 @@
         <div class="col-sm-4">
           <div class="profile-overview">
             <p>Date</p>
-            <h4>{{item.purchasedate}}</h4>
+            <h4>{{item.purchaseDate | date}}</h4>
           </div>
         </div>
         <div class="col-sm-4">
             <div class="profile-overview">
               <p>Amount</p>
-              <h4>{{item.invoiceamount}}</h4>
+              <h4>{{item.invoiceAmount}}</h4>
             </div>
           </div>
       </div>
