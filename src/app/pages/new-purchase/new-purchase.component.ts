@@ -15,12 +15,13 @@ export class NewPurchaseComponent {
     "id": "",
     "purchaseDate": new Date(), 
     "purchaseId": "",
-    "productId": 0,
+    "productId": -1,
     "quantity": 0,
     "supplierName": "",
     "invoiceAmount": 0,
     "invoiceNo": ""
   };
+  newProductName : string = '';
   productList: product[] = [];
 
   constructor(private service : InventoryService){
@@ -31,15 +32,36 @@ export class NewPurchaseComponent {
   }
 
   getAllProduct() {
-    this.service.getallproducts().subscribe((data)=>{
+    this.service.getallproducts().subscribe((data) => {
       this.productList = data;
+      const addNewProductValue: product = {
+        id: "",
+        productId: 0,
+        productName: "Add new Product"
+      }
+      this.productList.push(addNewProductValue);
       console.warn(this.productList);
-    })  
-  }
-  onSave() {
-    this.service.savenewpurchase(this.purchaseObj).subscribe((data)=>{
-      console.warn(data);
     })
   }
-
+  onSave() {
+    debugger;
+    if (this.newProductName != '') {
+      const newProduct: product = {
+        id: "",
+        productId: 0,
+        productName: this.newProductName
+      }
+      this.service.saveNewProduct(newProduct).subscribe((data) => {
+        this.purchaseObj.productId = data.productId;
+        this.service.savenewpurchase(this.purchaseObj).subscribe((data) => {
+          this.getAllProduct();
+        });
+      });
+    }
+    else{
+      this.service.savenewpurchase(this.purchaseObj).subscribe((data) => {
+        console.warn(data);
+      });
+    }
+  }
 }

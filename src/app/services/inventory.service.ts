@@ -9,32 +9,31 @@ import { product } from '../Interfaces/product.interface';
 })
 export class InventoryService {
 
-  constructor(private client : HttpClient) { }
+  constructor(private client: HttpClient) { }
 
 
-  getallpurchase():Observable<purchase[]>
-  {
+  getallpurchase(): Observable<purchase[]> {
     return this.client.get<purchase[]>('https://localhost:7145/getallpurchase')
   }
 
-  savenewpurchase(newpurchase:purchase):Observable<purchase>
-  {
-    return this.client.post<purchase>('https://localhost:7145/savepurchase',newpurchase);
+  savenewpurchase(newpurchase: purchase): Observable<purchase> {
+    return this.client.post<purchase>('https://localhost:7145/savepurchase', newpurchase);
   }
-  
-  getallproducts():Observable<product[]>
-  {
+
+  getallproducts(): Observable<product[]> {
     return this.client.get<product[]>('https://localhost:7145/getallProducts');
   }
 
-  getallStock():Observable<any>
-  {
+  getallStock(): Observable<any> {
     return this.client.get('http://localhost:5000/getallStock');
   }
 
-  getallsell():Observable<any>
-  {
+  getallsell(): Observable<any> {
     return this.client.get('http://localhost:5000/getallsell');
+  }
+
+  saveNewProduct(newProduct : product): Observable<product>{
+    return this.client.post<product>('https://localhost:7145/saveProduct',newProduct);
   }
 
 }

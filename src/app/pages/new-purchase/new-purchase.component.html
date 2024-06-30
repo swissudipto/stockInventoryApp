@@ -28,6 +28,10 @@
                     <option *ngFor="let item of productList" [value]="item.productId"> {{item.productName}}</option>
                 </select> 
             </div>
+            <div class="col-3" *ngIf="purchaseObj.productId == 0">
+                <label for="">New Product Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newProductName"  >
+            </div>
             <div class="col-3">
                 <label for="">Quantity</label>
                 <input type="number" class="form-control" [(ngModel)]="purchaseObj.quantity"  >
