@@ -9,6 +9,10 @@ import { NewSaleComponent } from './pages/new-sale/new-sale.component';
 
 const routes: Routes = [
   {
+    path : '',
+    component: DashboardComponent
+  },
+  {
     path : 'newpurchase',
     component :NewPurchaseComponent
   },

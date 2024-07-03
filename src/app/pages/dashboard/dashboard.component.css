@@ -1,0 +1,27 @@
+.dashboard{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25%;
+}
+
+.glow {
+    height: 100%;
+    width: 100%;
+    font-size:inherit;
+    color:black;
+    text-align: center;
+    animation: glow .5s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    }
+    
+    to {
+      text-shadow: 0 0 20px #fff, 0 0 30px #55032c, 0 0 40px #55032c, 0 0 50px #55032c, 0 0 60px #55032c, 0 0 70px #55032c, 0 0 80px #55032c;
+    }
+  }

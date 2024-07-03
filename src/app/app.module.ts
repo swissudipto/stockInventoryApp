@@ -11,6 +11,7 @@ import { SaleListComponent } from './pages/sale-list/sale-list.component';
 import { StockComponent } from './pages/stock/stock.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AgGridModule
   ],
   providers: [],
   bootstrap: [AppComponent]
