@@ -1,10 +1,11 @@
 <div class="row">
   <div class="col-12 text-end">
-    <button class="btn btn-sm btn-success" routerLink="/newpurchase">
+    <button class="btn btn-sm btn-success" (click)="openDialog()">
       New Purchase
     </button>
   </div>
 </div>
+<br>
 <div class="row" *ngIf="false">
   <div class="col-3" *ngFor="let item of purchase">
     <div class="profile-card-4 text-center">
@@ -48,4 +49,8 @@
     [rowData]="purchase"
   >
   </ag-grid-angular>
+</div>
+
+<div *ngIf="showspinner" class="spinner-border customspinner" role="status">
+  <span class="sr-only"></span>
 </div>

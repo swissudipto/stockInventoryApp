@@ -12,6 +12,11 @@ import { StockComponent } from './pages/stock/stock.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatirialDesignModule } from './matirial-design/matirial-design.module';
+import { PurchaseDialogComponent } from './pages/Shared/purchase-dialog/purchase-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -21,16 +26,21 @@ import { AgGridModule } from 'ag-grid-angular';
     NewSaleComponent,
     PurchaseListComponent,
     SaleListComponent,
-    StockComponent
-    ],
+    StockComponent,
+    PurchaseDialogComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    AgGridModule
+    AgGridModule,
+    BrowserAnimationsModule,
+    MatirialDesignModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
