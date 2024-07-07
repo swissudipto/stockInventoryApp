@@ -25,7 +25,7 @@ export class PurchaseListComponent implements OnInit {
     { field: 'quantity' },
     { field: 'supplierName' },
     { field: 'invoiceAmount' },
-    { field: 'invoiceNo' },
+    { field: 'invoiceNo' }
   ];
 
   purchase: purchase[] = [];

@@ -10,13 +10,17 @@ import { PurchaseListComponent } from './pages/purchase-list/purchase-list.compo
 import { SaleListComponent } from './pages/sale-list/sale-list.component';
 import { StockComponent } from './pages/stock/stock.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatirialDesignModule } from './matirial-design/matirial-design.module';
 import { PurchaseDialogComponent } from './pages/Shared/purchase-dialog/purchase-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -38,9 +42,14 @@ import { MatButtonModule} from '@angular/material/button';
     BrowserAnimationsModule,
     MatirialDesignModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

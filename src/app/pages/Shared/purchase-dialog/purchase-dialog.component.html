@@ -1,25 +1,27 @@
-<h2 mat-dialog-tittle>Hello World</h2>
-<form mat-dialog-content for>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet cumque
-    numquam maxime aliquid praesentium neque officia ab fuga tempore, quae
-    commodi ea exercitationem nulla necessitatibus expedita corporis? Libero,
-    quos quasi.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet cumque
-    numquam maxime aliquid praesentium neque officia ab fuga tempore, quae
-    commodi ea exercitationem nulla necessitatibus expedita corporis? Libero,
-    quos quasi.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet cumque
-    numquam maxime aliquid praesentium neque officia ab fuga tempore, quae
-    commodi ea exercitationem nulla necessitatibus expedita corporis? Libero,
-    quos quasi.
-  </p>
+<h2 mat-dialog-tittle>Create New Purchase</h2>
+<form mat-dialog-content [formGroup]="purchaseForm">
+
+  <mat-form-field>
+    <mat-label for="invoiceNo">Invoice No: </mat-label>
+    <input matInput id="invoiceNo" type="text" placeholder="Please Enter the Invoice Number.."
+      formControlName="invoiceNo">
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-label for="supplierName">Supplier Name: </mat-label>
+    <input matInput id="supplierName" type="text" placeholder="Please Enter the Supplier Name.."
+      formControlName="supplierName">
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-label for="purchaseDate">Purchase Date: </mat-label>
+    <input matInput [matDatepicker]="picker" id="purchaseDate" type="date" formControlName="purchaseDate">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
 </form>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="'confirm'">Confirm</button>
+  <button mat-button [mat-dialog-close]="'confirm'" (click)="onSaveClick()">Save Purchase</button>
 </div>
