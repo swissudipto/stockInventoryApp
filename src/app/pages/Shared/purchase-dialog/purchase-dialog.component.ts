@@ -3,6 +3,7 @@ import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormControl, FormGroup } from '@angular/forms';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { product } from 'src/app/Interfaces/product.interface';
+import { purchase } from 'src/app/Interfaces/puchase.interface';
 
 @Component({
   selector: 'app-purchase-dialog',
@@ -16,10 +17,10 @@ export class PurchaseDialogComponent implements OnInit {
     invoiceNo: new FormControl(''),
     supplierName: new FormControl(''),
     purchaseDate: new FormControl(''),
-    productId: new FormControl<number>(-1),
     quantity: new FormControl<number>(0),
     invoiceAmount: new FormControl<number>(0),
-    newProductName: new FormControl('')
+    newProductName: new FormControl(''),
+    selectedProductid: new FormControl<number>(0)
   })
 
   productList: product[] = [];
@@ -33,7 +34,51 @@ export class PurchaseDialogComponent implements OnInit {
 
   onSaveClick() {
     debugger;
-    console.warn(this.purchaseForm);
+    const newPurchase: purchase = {
+      invoiceNo: this.purchaseForm.value.invoiceNo ? this.purchaseForm.value.invoiceNo : "",
+      invoiceAmount: this.purchaseForm.value.invoiceAmount ? this.purchaseForm.value.invoiceAmount : 0,
+      productId: this.purchaseForm.value.selectedProductid ? this.purchaseForm.value.selectedProductid : 0,
+      supplierName: this.purchaseForm.value.supplierName ? this.purchaseForm.value.supplierName : "",
+      purchaseDate: this.purchaseForm.value.purchaseDate ? this.purchaseForm.value.purchaseDate : "",
+      quantity: this.purchaseForm.value.quantity ? this.purchaseForm.value.quantity : 0,
+      id: '',
+      purchaseId: ''
+    }
+
+    if (this.purchaseForm.controls.selectedProductid.value == -1) {
+      const newProduct: product = {
+        id: "",
+        productId: 0,
+        productName: this.purchaseForm.controls.newProductName.value ? this.purchaseForm.controls.newProductName.value : ""
+      }
+      this.service.saveNewProduct(newProduct).subscribe({
+        next: (v) => {
+          newPurchase.productId = v.productId;
+          this.service.savenewpurchase(newPurchase).subscribe({
+            next: (v) => {
+              this.getAllProduct();
+            },
+            error: (e) => {
+              console.log(e);
+            }
+          });
+        },
+        error: (e) => {
+          console.log(e);
+        }
+      });
+    }
+    else {
+      this.service.savenewpurchase(newPurchase).subscribe({
+        next: (v) => {
+          console.log(v);
+        },
+        error: (e) => {
+          console.log(e);
+        }
+      }
+      );
+    }
   }
 
   getAllProduct() {
@@ -41,7 +86,7 @@ export class PurchaseDialogComponent implements OnInit {
       this.productList = data;
       const addNewProductValue: product = {
         id: "",
-        productId: 0,
+        productId: -1,
         productName: "Add new Product"
       }
       this.productList.push(addNewProductValue);

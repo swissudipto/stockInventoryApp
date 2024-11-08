@@ -2,7 +2,7 @@
 export interface purchase{
     id : string;  
     purchaseId : string;  
-    purchaseDate : Date;   
+    purchaseDate : Date | string;   
     productId : number;  
     quantity : number;  
     supplierName : string;

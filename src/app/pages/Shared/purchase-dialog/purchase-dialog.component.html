@@ -15,19 +15,19 @@
   <br>
   <mat-form-field>
     <mat-label for="purchaseDate">Purchase Date: </mat-label>
-    <input matInput [matDatepicker]="picker" id="purchaseDate" type="date" formControlName="purchaseDate">
+    <input matInput [matDatepicker]="picker"  formControlName="purchaseDate">
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   &nbsp;
   <mat-form-field>
     <mat-label>Select Product</mat-label>
-    <mat-select name="productName">
+    <mat-select  formControlName="selectedProductid" >
       <mat-option id="productName" *ngFor="let product of productList" [value]="product.productId">{{product.productName}}</mat-option>
     </mat-select>
   </mat-form-field>
   &nbsp;
-   <mat-form-field *ngIf="purchaseForm.controls.newProductName.value == 'Add new Product'">
+   <mat-form-field *ngIf="purchaseForm.controls.selectedProductid.value == -1">
     <mat-label for="newProductName">New Product Name</mat-label>
     <input matInput type="text" id="newProductName" formControlName="newProductName">
   </mat-form-field>
@@ -45,5 +45,5 @@
 </form>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="'confirm'" (click)="onSaveClick()">Save Purchase</button>
+  <button mat-button [mat-dialog-close]="'confirm'" (click)="onSaveClick()">Save Purchase</button> 
 </div>

@@ -56,6 +56,9 @@ export class PurchaseListComponent implements OnInit {
 
     dialogRef
       .afterClosed()
-      .subscribe((result) => console.log('Dialog Result ' + result));
+      .subscribe((result) => {
+        console.log('Dialog Result ' + result);
+        this.getAllPurchase()
+      });
   }
 }
