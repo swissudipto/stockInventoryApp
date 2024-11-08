@@ -3,7 +3,7 @@
         Stock List
     </div>
     <div class="card-body">
-        <table class="table table-bordered">
+        <!--<table class="table table-bordered">
             <thead>
             <tr>
                 <th>Sr No</th>
@@ -23,6 +23,16 @@
             </tr>   
         </tbody>
 
-        </table>
+        </table>-->
+
+        <div class="row">
+            <ag-grid-angular
+              class="ag-theme-quartz"
+              style="height: 500px"
+              [columnDefs]="coldefs"
+              [rowData]="stocklist"
+            >
+            </ag-grid-angular>
+        </div>
     </div>
 </div>

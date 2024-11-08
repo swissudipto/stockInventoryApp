@@ -20,7 +20,8 @@ export class PurchaseDialogComponent implements OnInit {
     quantity: new FormControl<number>(0),
     invoiceAmount: new FormControl<number>(0),
     newProductName: new FormControl(''),
-    selectedProductid: new FormControl<number>(0)
+    selectedProductid: new FormControl<number>(0),
+    Comment : new FormControl('')
   })
 
   productList: product[] = [];
@@ -38,9 +39,11 @@ export class PurchaseDialogComponent implements OnInit {
       invoiceNo: this.purchaseForm.value.invoiceNo ? this.purchaseForm.value.invoiceNo : "",
       invoiceAmount: this.purchaseForm.value.invoiceAmount ? this.purchaseForm.value.invoiceAmount : 0,
       productId: this.purchaseForm.value.selectedProductid ? this.purchaseForm.value.selectedProductid : 0,
+      productName: "",
       supplierName: this.purchaseForm.value.supplierName ? this.purchaseForm.value.supplierName : "",
       purchaseDate: this.purchaseForm.value.purchaseDate ? this.purchaseForm.value.purchaseDate : "",
       quantity: this.purchaseForm.value.quantity ? this.purchaseForm.value.quantity : 0,
+      comment : this.purchaseForm.value.Comment ? this.purchaseForm.value.Comment : '', 
       id: '',
       purchaseId: ''
     }

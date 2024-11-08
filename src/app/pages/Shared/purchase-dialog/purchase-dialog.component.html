@@ -41,6 +41,17 @@
     <mat-label for="invoiceAmount">Total Amount</mat-label>
     <input matInput type="number" id="invoiceAmount" formControlName="invoiceAmount">
   </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-label>Comment</mat-label>
+    <textarea matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+              formControlName="Comment">
+    </textarea>
+  </mat-form-field>
 
 </form>
 <div mat-dialog-actions>

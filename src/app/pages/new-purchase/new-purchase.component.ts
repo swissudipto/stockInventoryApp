@@ -13,13 +13,15 @@ export class NewPurchaseComponent {
 
   purchaseObj: purchase = {
     "id": "",
-    "purchaseDate": new Date(), 
+    "purchaseDate": new Date(),
     "purchaseId": "",
     "productId": -1,
     "quantity": 0,
     "supplierName": "",
     "invoiceAmount": 0,
-    "invoiceNo": ""
+    "invoiceNo": "",
+    "productName": '',
+    "comment": ''
   };
   newProductName : string = '';
   productList: product[] = [];

@@ -13,24 +13,25 @@ import { PurchaseDialogComponent } from '../Shared/purchase-dialog/purchase-dial
 })
 export class PurchaseListComponent implements OnInit {
   coldefs: ColDef[] = [
-    { field: 'id' },
-    { field: 'purchaseId' },
+    { field: 'purchaseId', filter: true },
+    { field: 'invoiceNo', filter: true },
+    { field: 'productName', filter: true },
+    { field: 'quantity', filter: true },
+    { field: 'invoiceAmount', filter: true },
+    { field: 'supplierName', filter: true },
     {
       field: 'purchaseDate',
       valueFormatter: function (params) {
-        return formatDate(params.value, 'MMM d, y, h:mm:ss a', 'en-US');
+        return formatDate(params.value, 'MMM d, y', 'en-US');
       },
+      filter: true
     },
-    { field: 'productId' },
-    { field: 'quantity' },
-    { field: 'supplierName' },
-    { field: 'invoiceAmount' },
-    { field: 'invoiceNo' }
+    { field: 'comment', filter: true },
   ];
 
   purchase: purchase[] = [];
   showspinner: boolean = true;
-  constructor(private service: InventoryService, private dialog: MatDialog) {}
+  constructor(private service: InventoryService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getAllPurchase();

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { purchase } from '../Interfaces/puchase.interface';
 import { product } from '../Interfaces/product.interface';
+import { stock } from '../Interfaces/stock.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,8 @@ export class InventoryService {
     return this.client.get<product[]>('https://localhost:7145/getallProducts');
   }
 
-  getallStock(): Observable<any> {
-    return this.client.get('http://localhost:5000/getallStock');
+  getallStock(): Observable<stock[]> {
+    return this.client.get<stock[]>('https://localhost:7145/getallStock');
   }
 
   getallsell(): Observable<any> {
