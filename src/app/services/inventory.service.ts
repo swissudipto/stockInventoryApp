@@ -4,37 +4,39 @@ import { Observable } from 'rxjs';
 import { purchase } from '../Interfaces/puchase.interface';
 import { product } from '../Interfaces/product.interface';
 import { stock } from '../Interfaces/stock.interface';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InventoryService {
-
-  constructor(private client: HttpClient) { }
-
+  constructor(private client: HttpClient) {}
+  private apiUrl = environment.apiUrl;
 
   getallpurchase(): Observable<purchase[]> {
-    return this.client.get<purchase[]>('https://localhost:7145/getallpurchase')
+    return this.client.get<purchase[]>(`${this.apiUrl}/getallpurchase`);
   }
 
   savenewpurchase(newpurchase: purchase): Observable<purchase> {
-    return this.client.post<purchase>('https://localhost:7145/savepurchase', newpurchase);
+    return this.client.post<purchase>(
+      `${this.apiUrl}/savepurchase`,
+      newpurchase
+    );
   }
 
   getallproducts(): Observable<product[]> {
-    return this.client.get<product[]>('https://localhost:7145/getallProducts');
+    return this.client.get<product[]>(`${this.apiUrl}/getallProducts`);
   }
 
   getallStock(): Observable<stock[]> {
-    return this.client.get<stock[]>('https://localhost:7145/getallStock');
+    return this.client.get<stock[]>(`${this.apiUrl}/getallStock`);
   }
 
   getallsell(): Observable<any> {
-    return this.client.get('http://localhost:5000/getallsell');
+    return this.client.get(`${this.apiUrl}/getallsell`);
   }
 
-  saveNewProduct(newProduct : product): Observable<product>{
-    return this.client.post<product>('https://localhost:7145/saveProduct',newProduct);
+  saveNewProduct(newProduct: product): Observable<product> {
+    return this.client.post<product>(`${this.apiUrl}/saveProduct`, newProduct);
   }
-
 }

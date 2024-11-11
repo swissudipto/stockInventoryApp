@@ -5,6 +5,7 @@ import { ColDef } from 'ag-grid-community';
 import { formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../Shared/purchase-dialog/purchase-dialog.component';
+import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-purchase-list',
@@ -31,6 +32,7 @@ export class PurchaseListComponent implements OnInit {
 
   purchase: purchase[] = [];
   showspinner: boolean = true;
+  uniqueSuppliersNames:any;
   constructor(private service: InventoryService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -42,17 +44,19 @@ export class PurchaseListComponent implements OnInit {
       next: (v) => {
         this.purchase = v;
         this.showspinner = false;
+        this.uniqueSuppliersNames = new Set( this.purchase.filter(purchase => purchase.supplierName.trim() !=="").map(supplier => supplier.supplierName));
       },
       error: (e) => {
         console.warn('Purchase API call Failed');
         this.showspinner = false;
+        this.dialog.open(ErrorDialogComponent,{data:e.message});
       },
     });
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
-      data: { tittle: 'Hello Jarvis' }
+      data: { supplierNames: this.uniqueSuppliersNames }
     });
 
     dialogRef

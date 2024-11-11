@@ -15,7 +15,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatirialDesignModule } from './matirial-design/matirial-design.module';
 import { PurchaseDialogComponent } from './pages/Shared/purchase-dialog/purchase-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogContent, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -23,6 +23,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ErrorDialogComponent } from './pages/Shared/error-dialog/error-dialog.component';
 
 
 @NgModule({
@@ -34,8 +36,9 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     PurchaseListComponent,
     SaleListComponent,
     StockComponent,
-    PurchaseDialogComponent
-  ],
+    PurchaseDialogComponent,
+    ErrorDialogComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -52,7 +55,9 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    MatAutocompleteModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],

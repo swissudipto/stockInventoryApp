@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ColDef } from 'ag-grid-community';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-stock',
@@ -15,7 +17,7 @@ coldefs: ColDef[] = [
   { field: 'quantity',filter :true },
 ];
 
-constructor(private service:InventoryService){
+constructor(private service:InventoryService,private dialog :MatDialog){
 }
 
 ngOnInit(): void {
@@ -29,6 +31,7 @@ loadallstock(){
     },
     error : (e) => {
       console.warn(e);
+      this.dialog.open(ErrorDialogComponent,{data:e.message});
     }
   });
 }
