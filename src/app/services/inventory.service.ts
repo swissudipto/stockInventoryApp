@@ -5,12 +5,13 @@ import { purchase } from '../Interfaces/puchase.interface';
 import { product } from '../Interfaces/product.interface';
 import { stock } from '../Interfaces/stock.interface';
 import { environment } from 'src/environments/environment.prod';
+import { sell } from '../Interfaces/sell.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InventoryService {
-  constructor(private client: HttpClient) {}
+  constructor(private client: HttpClient) { }
   private apiUrl = environment.apiUrl;
 
   getallpurchase(): Observable<purchase[]> {
@@ -38,5 +39,9 @@ export class InventoryService {
 
   saveNewProduct(newProduct: product): Observable<product> {
     return this.client.post<product>(`${this.apiUrl}/saveProduct`, newProduct);
+  }
+
+  saveNewSell(newSell: sell): Observable<sell> {
+    return this.client.post<sell>(`${this.apiUrl}/savesell`, newSell);
   }
 }

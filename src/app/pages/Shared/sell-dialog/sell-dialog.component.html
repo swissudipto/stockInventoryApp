@@ -1,0 +1,99 @@
+<h2 mat-dialog-tittle>Create New Sell</h2>
+<form mat-dialog-content [formGroup]="sellForm">
+  <mat-form-field>
+    <mat-label for="customerName">Customer Name: </mat-label>
+    <input
+      matInput
+      id="customerName"
+      type="text"
+      placeholder="Please Enter the Customer Name.."
+      formControlName="customerName"
+    />
+  </mat-form-field> 
+  &nbsp;
+  <mat-form-field>
+    <mat-label for="phoneNumber">Phone Number: </mat-label>
+    <input
+      matInput
+      id="phoneNumber"
+      type="text"
+      placeholder="Please Enter the Phone Number.."
+      formControlName="phoneNumber"
+    />
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-label for="customerAddress">Customer Address: </mat-label>
+    <input
+      matInput
+      id="customerAddress"
+      type="text"
+      placeholder="Please Enter the Customer Address.."
+      formControlName="customerAddress"
+    />
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Product Name: </mat-label>
+    <input
+      type="text"
+      placeholder="Search Product"
+      aria-label="Product"
+      matInput
+      [formControl]="productSearch"
+      [matAutocomplete]="auto1"
+    />
+    <mat-autocomplete #auto1="matAutocomplete">
+      <mat-option
+        *ngFor="let product of productFilteredOptions | async"
+        [value]="product.productName"
+        (onSelectionChange)="productSelectionChange(product)"
+      >
+        {{ product.productName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-label for="sellDate">Sell Date: </mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="sellDate" />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  
+  <br />
+  <mat-form-field>
+    <mat-label for="quantity">Quantity</mat-label>
+    <input matInput type="number" id="quantity" formControlName="quantity" />
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-label for="sellAmount">Total Amount</mat-label>
+    <input
+      matInput
+      type="number"
+      id="sellAmount"
+      formControlName="sellAmount"
+    />
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-label>Comment</mat-label>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+      formControlName="Comment"
+    >
+    </textarea>
+  </mat-form-field>
+</form>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="onSaveClick()">Save Purchase</button>
+</div>
+<div *ngIf="showspinner" class="spinner-border customspinner" role="status">
+  <span class="sr-only"></span>
+</div>
