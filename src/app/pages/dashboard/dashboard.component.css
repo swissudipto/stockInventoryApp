@@ -1,27 +1,33 @@
-.dashboard{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 25%;
+/* Use Grid to make the content fit within the viewport */
+.dashboard-container {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.glow {
-    height: 100%;
-    width: 100%;
-    font-size:inherit;
-    color:black;
-    text-align: center;
-    animation: glow .5s ease-in-out infinite alternate;
+.dashboard-content {
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.dashboard-footer {
+  background-color: #f8f9fa;
+  padding: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid #dee2e6;
+
+  p {
+    margin: 5px 0;
   }
-  
-  @keyframes glow {
-    from {
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-    }
-    
-    to {
-      text-shadow: 0 0 20px #fff, 0 0 30px #55032c, 0 0 40px #55032c, 0 0 50px #55032c, 0 0 60px #55032c, 0 0 70px #55032c, 0 0 80px #55032c;
-    }
+
+  a {
+    text-decoration: none;
+    color: #0d6efd;
   }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
