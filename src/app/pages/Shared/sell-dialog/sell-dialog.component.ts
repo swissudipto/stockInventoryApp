@@ -16,13 +16,13 @@ import { stock } from 'src/app/Interfaces/stock.interface';
 export class SellDialogComponent {
 
   sellForm = new FormGroup({
-    customerName: new FormControl(''),
+    customerName: new FormControl('',[Validators.required]),
     phoneNumber: new FormControl(''),
     customerAddress: new FormControl(''),
     sellDate: new FormControl(''),
-    quantity: new FormControl<number>(0),
-    sellAmount: new FormControl<number>(0),
-    productId: new FormControl<number>(0),
+    quantity: new FormControl<number>(0,[Validators.min(1)]),
+    sellAmount: new FormControl(''),
+    productId: new FormControl<number>(0,[Validators.required]),
     productName: new FormControl(''),
     Comment: new FormControl(''),
   });
@@ -74,7 +74,7 @@ export class SellDialogComponent {
         : '',
       sellAmount: this.sellForm.value.sellAmount
         ? this.sellForm.value.sellAmount
-        : 0,
+        : '',
       customerName: this.sellForm.value.customerName
         ? this.sellForm.value.customerName
         : '',

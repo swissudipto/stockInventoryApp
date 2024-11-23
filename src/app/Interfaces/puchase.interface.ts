@@ -1,13 +1,12 @@
 
 export interface purchase {
     id: string;
-    purchaseId: string;
     purchaseDate: Date | string;
     productId: number;
     productName: string;
     quantity: number;
     supplierName: string;
-    invoiceAmount: number;
+    invoiceAmount: string;
     invoiceNo: string;
     comment: string;
 }

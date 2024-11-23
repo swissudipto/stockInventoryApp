@@ -9,6 +9,6 @@ export interface sell {
     productId: number;
     productName: string;
     quantity: number;
-    sellAmount: number;
+    sellAmount: string;
     comment: string;
 }

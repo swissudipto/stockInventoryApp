@@ -14,11 +14,10 @@ export class NewPurchaseComponent {
   purchaseObj: purchase = {
     "id": "",
     "purchaseDate": new Date(),
-    "purchaseId": "",
     "productId": -1,
     "quantity": 0,
     "supplierName": "",
-    "invoiceAmount": 0,
+    "invoiceAmount": '',
     "invoiceNo": "",
     "productName": '',
     "comment": ''

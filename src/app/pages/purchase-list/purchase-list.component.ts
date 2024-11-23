@@ -14,7 +14,6 @@ import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.compon
 })
 export class PurchaseListComponent implements OnInit {
   coldefs: ColDef[] = [
-    { field: 'purchaseId', filter: true },
     { field: 'invoiceNo', filter: true },
     { field: 'productName', filter: true },
     { field: 'quantity', filter: true },

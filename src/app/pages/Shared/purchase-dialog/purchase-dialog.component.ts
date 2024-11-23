@@ -22,8 +22,8 @@ export class PurchaseDialogComponent implements OnInit {
     invoiceNo: new FormControl(''),
     supplierName: new FormControl('', [Validators.required]),
     purchaseDate: new FormControl(''),
-    quantity: new FormControl<number>(0),
-    invoiceAmount: new FormControl<number>(0),
+    quantity: new FormControl<number>(0,[Validators.min(1)]),
+    invoiceAmount: new FormControl(''),
     newProductName: new FormControl(''),
     selectedProductid: new FormControl<number>(0, [Validators.required]),
     Comment: new FormControl(''),
@@ -74,7 +74,7 @@ export class PurchaseDialogComponent implements OnInit {
         : '',
       invoiceAmount: this.purchaseForm.value.invoiceAmount
         ? this.purchaseForm.value.invoiceAmount
-        : 0,
+        : '',
       productId: this.purchaseForm.value.selectedProductid
         ? this.purchaseForm.value.selectedProductid
         : 0,
@@ -91,8 +91,7 @@ export class PurchaseDialogComponent implements OnInit {
       comment: this.purchaseForm.value.Comment
         ? this.purchaseForm.value.Comment
         : '',
-      id: '',
-      purchaseId: '',
+      id: ''
     };
 
     if (this.purchaseForm.controls.selectedProductid.value == -1) {
