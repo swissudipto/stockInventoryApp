@@ -65,4 +65,8 @@ export class PurchaseListComponent implements OnInit {
         this.getAllPurchase()
       });
   }
+
+  onPaginationChanges(param: any){
+    debugger;
+  }
 }

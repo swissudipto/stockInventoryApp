@@ -12,7 +12,9 @@
     class="ag-theme-quartz"
     style="height: 500px"
     [columnDefs]="coldefs"
+    [pagination]="true"
     [rowData]="purchase"
+    (paginationChanged)="onPaginationChanges($event)"
   >
   </ag-grid-angular>
 </div>
