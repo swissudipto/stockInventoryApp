@@ -14,8 +14,8 @@ export class InventoryService {
   constructor(private client: HttpClient) { }
   private apiUrl = environment.apiUrl;
 
-  getallpurchase(): Observable<purchase[]> {
-    return this.client.get<purchase[]>(`${this.apiUrl}/getallpurchase`);
+  getallpurchase(pageNumber: Number,pageSize: Number): Observable<any> {
+    return this.client.get<any>(`${this.apiUrl}/getallpurchase?page=${pageNumber}&pageSize=${pageSize}`);
   }
 
   savenewpurchase(newpurchase: purchase): Observable<purchase> {

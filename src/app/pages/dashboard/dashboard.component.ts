@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PdfgenerationService } from 'src/app/services/pdfgeneration.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class DashboardComponent {
   companyName = 'Cosmos Enterprise LTD';
+
+constructor(private pdfservice : PdfgenerationService){
+}
+
+
+  onbuttonpress(){
+    this.pdfservice.generateInvoicePdf();
+  }
 }

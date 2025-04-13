@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { purchase } from 'src/app/Interfaces/puchase.interface';
 import { InventoryService } from 'src/app/services/inventory.service';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, GridApi } from 'ag-grid-community';
 import { formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../Shared/purchase-dialog/purchase-dialog.component';
@@ -21,37 +21,47 @@ export class PurchaseListComponent implements OnInit {
     { field: 'supplierName', filter: true },
     {
       field: 'purchaseDate',
-      valueFormatter: function (params) {
-        return formatDate(params.value, 'MMM d, y', 'en-US');
-      },
+      //valueFormatter: function (params) {
+       // return formatDate(params.value, 'MMM d, y', 'en-US');
+     // },
       filter: true
     },
     { field: 'comment', filter: true },
   ];
 
   purchase: purchase[] = [];
-  showspinner: boolean = true;
+  showspinner: boolean = false;
   uniqueSuppliersNames:any;
+  gridApi: GridApi = new GridApi();
+  pageSize: number = 100;
+  totalRows: number = 0;
+
   constructor(private service: InventoryService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getAllPurchase();
+    //this.getAllPurchase(1,100);
   }
 
-  getAllPurchase() {
-    this.service.getallpurchase().subscribe({
-      next: (v) => {
-        this.purchase = v;
-        this.showspinner = false;
-        this.uniqueSuppliersNames = new Set( this.purchase.filter(purchase => purchase.supplierName.trim() !=="").map(supplier => supplier.supplierName));
-      },
-      error: (e) => {
-        console.warn('Purchase API call Failed');
-        this.showspinner = false;
-        this.dialog.open(ErrorDialogComponent,{data:e.message});
-      },
-    });
-  }
+  // getAllPurchase(page: number, pageSize: number) {
+  //   this.showspinner = true;
+
+  //   this.service.getallpurchase(page, pageSize).subscribe({
+  //     next: (res) => {
+  //       this.purchase = res.items;
+  //       this.totalRows = res.totalCount;
+  //       this.showspinner = false;
+  //       this.gridApi.paginationSetRowCount(this.totalRows); // Update AG Grid's total row count
+  //       this.uniqueSuppliersNames = new Set(
+  //         this.purchase.filter(p => p.supplierName.trim() !== "").map(p => p.supplierName)
+  //       );
+  //     },
+  //     error: (e) => {
+  //       this.showspinner = false;
+  //       console.warn('Purchase API call failed');
+  //       this.dialog.open(ErrorDialogComponent, { data: e.message });
+  //     }
+  //   });
+  // }
 
   openDialog() {
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
@@ -62,11 +72,41 @@ export class PurchaseListComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         console.log('Dialog Result ' + result);
-        this.getAllPurchase()
+        //this.getAllPurchase(1,100)
       });
   }
 
-  onPaginationChanges(param: any){
-    debugger;
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+
+    const dataSource = {
+      getRows: (params: any) => {
+        const page = Math.floor(params.startRow / this.pageSize) + 1;
+        this.showspinner = true;
+        this.service.getallpurchase(page, this.pageSize).subscribe({
+          next: (res) => {
+            this.showspinner = false;
+            // Defer the callback to avoid render conflict
+            setTimeout(() => {
+              params.successCallback(res.items, res.totalCount);
+            }, 0);
+          },
+          error: (err) => {
+            console.error('Error loading data', err);
+            params.failCallback();
+            this.showspinner = false;
+          }
+        });
+      }
+    };
+
+    this.gridApi.setGridOption('datasource', dataSource);
+  }
+
+  onPaginationChanged() {
+    if (this.gridApi) {
+     // const currentPage = this.gridApi.paginationGetCurrentPage() + 1;
+      //this.getAllPurchase(currentPage, this.pageSize);
+    }
   }
 }
