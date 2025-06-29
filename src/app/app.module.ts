@@ -26,6 +26,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ErrorDialogComponent } from './pages/Shared/error-dialog/error-dialog.component';
 import { SellDialogComponent } from './pages/Shared/sell-dialog/sell-dialog.component';
+import { SellDetailsComponent } from './pages/Shared/sell-details/sell-details.component';
+import { InvoiceLinkComponent } from './pages/Shared/invoice-link/invoice-link.component';
 
 
 @NgModule({
@@ -39,7 +41,9 @@ import { SellDialogComponent } from './pages/Shared/sell-dialog/sell-dialog.comp
     StockComponent,
     PurchaseDialogComponent,
     ErrorDialogComponent,
-    SellDialogComponent
+    SellDialogComponent,
+    SellDetailsComponent,
+    InvoiceLinkComponent
     ],
   imports: [
     BrowserModule,
