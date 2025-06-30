@@ -1,74 +1,21 @@
-<h2 mat-dialog-tittle>{{sellForm.controls.invoiceNumber.value}} Details</h2>
-<form mat-dialog-content [formGroup]="sellForm">
-  <mat-form-field>
-    <mat-label for="customerName">Customer Name: </mat-label>
-    <input
-      matInput
-      id="customerName"
-      type="text"
-      placeholder="Please Enter the Customer Name.."
-      formControlName="customerName"
-    />
-  </mat-form-field>
-  &nbsp;
-  <mat-form-field>
-    <mat-label for="phoneNumber">Phone Number: </mat-label>
-    <input
-      matInput
-      id="phoneNumber"
-      type="text"
-      placeholder="Please Enter the Phone Number.."
-      formControlName="phoneNumber"
-    />
-  </mat-form-field>
-  &nbsp;
-  <mat-form-field>
-    <mat-label for="customerAddress">Customer Address: </mat-label>
-    <input
-      matInput
-      id="customerAddress"
-      type="text"
-      placeholder="Please Enter the Customer Address.."
-      formControlName="customerAddress"
-    />
-  </mat-form-field>
-  <br>
-  &nbsp;
-  <mat-form-field>
-    <mat-label for="sellDate">Sell Date: </mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="sellDate" />
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
 
-  <br />
-  <mat-form-field>
-    <mat-label for="quantity">Quantity</mat-label>
-    <input matInput type="number" id="quantity" formControlName="quantity" />
-  </mat-form-field>
-  &nbsp;
-  <mat-form-field>
-    <mat-label for="sellAmount">Total Amount</mat-label>
+<form  [formGroup]="sellForm" class="sellDetails-Container">
+<p>Debug value: {{ sellForm.get('customerName')?.value }}</p>
+  <label for="customerName">Invoice Number: </label>
     <input
-      matInput
-      type="text"
-      id="sellAmount"
-      formControlName="sellAmount"
-    />
-  </mat-form-field>
-  &nbsp;
-  <mat-form-field>
-    <mat-label>Comment</mat-label>
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-      formControlName="Comment"
-    >
-    </textarea>
-  </mat-form-field>
+    id="customerName"
+    type="text"
+    formControlName="invoiceNumber"
+    readonly="true"
+  />
+<br>
+  <label for="customerName">Customer Name: </label>
+  <input
+    id="customerName"
+    type="text"
+    formControlName="customerName"
+    readonly="true"
+  />
 </form>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>

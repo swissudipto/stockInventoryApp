@@ -9,7 +9,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   templateUrl: './sell-details.component.html',
   styleUrls: ['./sell-details.component.css']
 })
-export class SellDetailsComponent implements OnInit {
+export class SellDetailsComponent implements OnInit  {
 
   sellForm = new FormGroup({
     customerName: new FormControl('',[Validators.required]),
@@ -29,12 +29,12 @@ constructor(
     public dialogRef: MatDialogRef<SellDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    debugger;
-    console.log(data);
   }
 
   ngOnInit(): void {
-    console.log(this.data);
-    this.sellForm.controls.invoiceNumber = this.data.rowData.invoiceNo;
+    this.sellForm.controls.customerName.setValue(this.data.rowData.customerName);
+    this.sellForm.controls.invoiceNumber.setValue(this.data.rowData.invoiceNo);
+    debugger;
   }
+
 }

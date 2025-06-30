@@ -1,0 +1,26 @@
+/*Not Used as input class is modified*/
+.readonly-plain {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+  cursor: default;
+  outline: none;
+}
+
+.sellDetails-Container{
+  margin: 2%;
+}
+
+input {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+  cursor: default;
+  outline: none;
+}
