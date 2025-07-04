@@ -1,59 +1,38 @@
 <h2 mat-dialog-tittle>Create New Purchase</h2>
 <form mat-dialog-content [formGroup]="purchaseForm">
-  <mat-form-field>
-    <mat-label for="invoiceNo">Invoice No: </mat-label>
-    <input
-      matInput
-      id="invoiceNo"
-      type="text"
-      placeholder="Please Enter the Invoice Number.."
-      formControlName="invoiceNo"
-    />
-  </mat-form-field>
-  &nbsp;
-  <mat-form-field>
-    <mat-label>Supplier Name: </mat-label>
-    <input
-      type="text"
-      placeholder="Search Supplier"
-      aria-label="Supplier"
-      matInput
-      [formControl]="supplierSearch"
-      [matAutocomplete]="auto1"
-    />
-    <mat-autocomplete #auto1="matAutocomplete">
-      <mat-option
-        *ngFor="let Supplier of supplierFilteredOptions | async"
-        [value]="Supplier.supplier"
-      >
-        {{ Supplier.supplier }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <br />
-  <mat-form-field>
-    <mat-label for="purchaseDate">Purchase Date: </mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="purchaseDate" />
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  &nbsp;
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field>
+      <mat-label for="invoiceNo">Invoice No: </mat-label>
+      <input matInput id="invoiceNo" type="text" placeholder="Please Enter the Invoice Number.."
+        formControlName="invoiceNo" />
+    </mat-form-field>
+    &nbsp;
+    <mat-form-field>
+      <mat-label>Supplier Name: </mat-label>
+      <input type="text" placeholder="Search Supplier" aria-label="Supplier" matInput [formControl]="supplierSearch"
+        [matAutocomplete]="auto1" />
+      <mat-autocomplete #auto1="matAutocomplete">
+        <mat-option *ngFor="let Supplier of supplierFilteredOptions | async" [value]="Supplier.supplier">
+          {{ Supplier.supplier }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+     &nbsp;
+    <mat-form-field>
+      <mat-label for="purchaseDate">Purchase Date: </mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="purchaseDate" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+ 
   <mat-form-field>
     <mat-label>Select Product</mat-label>
-    <input
-      type="text"
-      placeholder="Search Product"
-      aria-label="Product"
-      matInput
-      [formControl]="productSearch"
-      [matAutocomplete]="auto2"
-    />
+    <input type="text" placeholder="Search Product" aria-label="Product" matInput [formControl]="productSearch"
+      [matAutocomplete]="auto2" />
     <mat-autocomplete #auto2="matAutocomplete">
-      <mat-option
-        *ngFor="let option of filteredOptions | async"
-        [value]="option.productName"
-        (onSelectionChange)="productSelectionChange(option)"
-      >
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.productName"
+        (onSelectionChange)="productSelectionChange(option)">
         {{ option.productName }}
       </mat-option>
     </mat-autocomplete>
@@ -61,12 +40,7 @@
   &nbsp;
   <mat-form-field *ngIf="purchaseForm.controls.selectedProductid.value == -1">
     <mat-label for="newProductName">New Product Name</mat-label>
-    <input
-      matInput
-      type="text"
-      id="newProductName"
-      formControlName="newProductName"
-    />
+    <input matInput type="text" id="newProductName" formControlName="newProductName" />
   </mat-form-field>
   <br />
   <mat-form-field>
@@ -76,24 +50,13 @@
   &nbsp;
   <mat-form-field>
     <mat-label for="invoiceAmount">Total Amount</mat-label>
-    <input
-      matInput
-      type="text"
-      id="invoiceAmount"
-      formControlName="invoiceAmount"
-    />
+    <input matInput type="text" id="invoiceAmount" formControlName="invoiceAmount" />
   </mat-form-field>
   &nbsp;
   <mat-form-field>
     <mat-label>Comment</mat-label>
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-      formControlName="Comment"
-    >
+    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+      formControlName="Comment">
     </textarea>
   </mat-form-field>
 </form>

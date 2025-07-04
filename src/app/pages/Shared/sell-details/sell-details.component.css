@@ -24,3 +24,8 @@ input {
   cursor: default;
   outline: none;
 }
+
+.totalDiv{
+  margin: 2%;
+  text-align: right;
+}

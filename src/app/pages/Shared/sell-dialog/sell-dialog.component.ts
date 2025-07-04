@@ -16,13 +16,13 @@ import { stock } from 'src/app/Interfaces/stock.interface';
 export class SellDialogComponent {
 
   sellForm = new FormGroup({
-    customerName: new FormControl('',[Validators.required]),
+    customerName: new FormControl('', [Validators.required]),
     phoneNumber: new FormControl(''),
     customerAddress: new FormControl(''),
     sellDate: new FormControl(''),
-    quantity: new FormControl<number>(0,[Validators.min(1)]),
+    quantity: new FormControl<number>(0, [Validators.min(1)]),
     sellAmount: new FormControl(''),
-    productId: new FormControl<number>(0,[Validators.required]),
+    productId: new FormControl<number>(0, [Validators.required]),
     productName: new FormControl(''),
     Comment: new FormControl(''),
   });
@@ -42,12 +42,24 @@ export class SellDialogComponent {
     private dialog: MatDialog
   ) { }
   ngOnInit(): void {
+    debugger;
     this.productList = this.data.ProductList;
     this.productFilteredOptions = this.productSearch.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterProduct(value || ''))
     );
 
+    if (this.data.ViewDetails != undefined && this.data.ViewDetails === true) {
+      this.sellForm.controls.customerName.setValue(this.data.SellDetails.customerName);
+      this.sellForm.controls.customerAddress.setValue(this.data.SellDetails.customerAddress);
+      this.sellForm.controls.phoneNumber.setValue(this.data.SellDetails.phoneNumber);
+      this.sellForm.controls.productName.setValue(this.data.SellDetails.productName);
+      this.sellForm.controls.quantity.setValue(this.data.SellDetails.quantity);
+      this.sellForm.controls.sellAmount.setValue(this.data.SellDetails.sellAmount);
+      this.sellForm.controls.sellDate.setValue(this.data.SellDetails.sellDate);
+      this.sellForm.controls.Comment.setValue(this.data.SellDetails.comment);
+      this.sellForm.disable();
+    }
   }
 
   onSaveClick() {

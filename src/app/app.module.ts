@@ -27,8 +27,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ErrorDialogComponent } from './pages/Shared/error-dialog/error-dialog.component';
 import { SellDialogComponent } from './pages/Shared/sell-dialog/sell-dialog.component';
 import { SellDetailsComponent } from './pages/Shared/sell-details/sell-details.component';
-import { InvoiceLinkComponent } from './pages/Shared/invoice-link/invoice-link.component';
-
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -42,8 +41,7 @@ import { InvoiceLinkComponent } from './pages/Shared/invoice-link/invoice-link.c
     PurchaseDialogComponent,
     ErrorDialogComponent,
     SellDialogComponent,
-    SellDetailsComponent,
-    InvoiceLinkComponent
+    SellDetailsComponent
     ],
   imports: [
     BrowserModule,
@@ -63,7 +61,8 @@ import { InvoiceLinkComponent } from './pages/Shared/invoice-link/invoice-link.c
     MatSelectModule,
     NgxMatSelectSearchModule,
     MatAutocompleteModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent],

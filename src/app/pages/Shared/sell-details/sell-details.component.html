@@ -1,22 +1,100 @@
 
 <form  [formGroup]="sellForm" class="sellDetails-Container">
-<p>Debug value: {{ sellForm.get('customerName')?.value }}</p>
-  <label for="customerName">Invoice Number: </label>
+<h2>Invoice Number {{ sellForm.get('invoiceNumber')?.value }}</h2>
+  <mat-form-field>
+    <mat-label for="customerName">Customer Name: </mat-label>
     <input
-    id="customerName"
-    type="text"
-    formControlName="invoiceNumber"
-    readonly="true"
-  />
-<br>
-  <label for="customerName">Customer Name: </label>
-  <input
-    id="customerName"
-    type="text"
-    formControlName="customerName"
-    readonly="true"
-  />
+      matInput
+      id="customerName"
+      type="text"
+      placeholder="Please Enter the Customer Name.."
+      formControlName="customerName"
+      readonly="true"
+    />
+  </mat-form-field>
+   &nbsp;
+  <mat-form-field>
+    <mat-label for="phoneNumber">Phone Number: </mat-label>
+    <input
+      matInput
+      id="phoneNumber"
+      type="text"
+      placeholder="Please Enter the Phone Number.."
+      formControlName="phoneNumber"
+      readonly="true"
+    />
+  </mat-form-field>
+   &nbsp;
+  <mat-form-field>
+    <mat-label for="customerAddress">Customer Address: </mat-label>
+    <input
+      matInput
+      id="customerAddress"
+      type="text"
+      placeholder="Please Enter the Customer Address.."
+      formControlName="customerAddress"
+      readonly="true"
+    />
+  </mat-form-field>
+  <br/>
+   &nbsp;
+  <mat-form-field>
+    <mat-label for="sellDate">Sell Date: </mat-label>
+    <input 
+    matInput 
+    formControlName="sellDate" 
+    readonly="true"/>
+  </mat-form-field>
+ &nbsp;
+  <mat-form-field>
+    <mat-label>Comment</mat-label>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+      formControlName="Comment"
+      readonly="true"
+    >
+    </textarea>
+  </mat-form-field>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+  <!-- Position Column -->
+  <ng-container matColumnDef="demo-position">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="demo-Product">
+    <th mat-header-cell *matHeaderCellDef> Product </th>
+    <td mat-cell *matCellDef="let element"> {{element.Product}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="demo-Quantity">
+    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+    <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="demo-Amount">
+    <th mat-header-cell *matHeaderCellDef> Amount </th>
+    <td mat-cell *matCellDef="let element"> {{element.Amount}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<div class="totalDiv">
+<b>Total Amount:  {{totalAmount}}</b>
+</div>
+
+
 </form>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
+  <button mat-button (click)="downloadReceipt()">Download</button>
 </div>

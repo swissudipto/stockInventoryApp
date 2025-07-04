@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ColDef } from 'ag-grid-community';
 import { formatDate } from '@angular/common';
@@ -8,7 +8,6 @@ import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.compon
 import { SellDialogComponent } from '../Shared/sell-dialog/sell-dialog.component';
 import { stock } from 'src/app/Interfaces/stock.interface';
 import { SellDetailsComponent } from '../Shared/sell-details/sell-details.component';
-import { InvoiceLinkComponent } from '../Shared/invoice-link/invoice-link.component';
 
 @Component({
   selector: 'app-sale-list',
@@ -17,17 +16,18 @@ import { InvoiceLinkComponent } from '../Shared/invoice-link/invoice-link.compon
 })
 export class SaleListComponent implements OnInit {
   coldefs: ColDef[] = [
-    { field: 'invoiceNo', filter: true ,
+    {
+      field: 'invoiceNo', filter: true,
       cellRenderer: (params: any) => {
-      return `<span class="clickable-link">${params.value}</span>`;
-    },
-    onCellClicked: (params : any) => {
-      if (params.event.target.classList.contains('clickable-link')) {
-        this.onLinkClick(params.data);
+        return `<span class="clickable-link">${params.value}</span>`;
+      },
+      onCellClicked: (params: any) => {
+        if (params.event.target.classList.contains('clickable-link')) {
+          this.onLinkClick(params.data);
+        }
       }
-    }
-  },
-    { field: 'customerName', filter: true},
+    },
+    { field: 'customerName', filter: true },
     { field: 'customerAddress', filter: true },
     { field: 'phoneNumber', filter: true },
     { field: 'productName', filter: true },
@@ -48,7 +48,8 @@ export class SaleListComponent implements OnInit {
   showspinner: boolean = false;
 
   constructor(private dialog: MatDialog,
-    private inventoryService: InventoryService) { }
+    private inventoryService: InventoryService,
+    private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.getInStockProducts();
@@ -73,7 +74,7 @@ export class SaleListComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(SellDialogComponent, {
-      data: { ProductList : this.inStockProductList }
+      data: { ProductList: this.inStockProductList }
     });
 
     dialogRef
@@ -96,51 +97,19 @@ export class SaleListComponent implements OnInit {
     });
   }
 
-//   onLinkClick(params: any): void {
-//   const rowData = params.data;
-//   debugger;
-//   console.log('Row data:', rowData);
-
-//   // Your custom logic here
-//   alert(`Clicked on: ${rowData.name}`);
-// }
-
-// openDetailView(rowData: any): void {
-//     const dialogRef = this.dialog.open(SellDetailsComponent, {
-//       width: '500px',
-//       data: rowData
-//     });
-
-//     dialogRef.afterClosed().subscribe(result => {
-//       console.log('Modal closed');
-//     });
-//   }
-// }
-
-
-  openDetailView(rowData: any) {
-    const dialogRef = this.dialog.open(SellDetailsComponent, {
-      data: { }
-    });
-
-    dialogRef
-      .afterClosed()
-      .subscribe((result) => {
-        console.log('Dialog Result ' + result);
+  onLinkClick(rowData: any) {
+    this.ngZone.run(() => {
+      const dialogRef = this.dialog.open(SellDetailsComponent, {
+        data: { SellDetails: rowData, 
+                ViewDetails: true }
       });
+
+      dialogRef
+        .afterClosed()
+        .subscribe((result) => {
+          console.log('Dialog Result ' + result);
+        });
+    });
   }
-
-
-onLinkClick(rowData: any) {
-const dialogRef = this.dialog.open(SellDetailsComponent, {
-      data: { rowData}
-    });
-
-    dialogRef
-      .afterClosed()
-      .subscribe((result) => {
-        console.log('Dialog Result ' + result);
-      });
-}
 }
 
