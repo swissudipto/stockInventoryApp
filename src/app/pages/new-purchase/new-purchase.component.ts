@@ -14,13 +14,12 @@ export class NewPurchaseComponent {
   purchaseObj: purchase = {
     "id": "",
     "purchaseDate": new Date(),
-    "productId": -1,
-    "quantity": 0,
     "supplierName": "",
-    "invoiceAmount": '',
-    "invoiceNo": "",
-    "productName": '',
-    "comment": ''
+    "comment": '',
+    totalAmount: 0,
+    supplierContactNumber: '',
+    supplierAddress: '',
+    PurchaseId: 0
   };
   newProductName : string = '';
   productList: product[] = [];
@@ -53,7 +52,7 @@ export class NewPurchaseComponent {
         productName: this.newProductName
       }
       this.service.saveNewProduct(newProduct).subscribe((data) => {
-        this.purchaseObj.productId = data.productId;
+       // this.purchaseObj.productId = data.productId;
         this.service.savenewpurchase(this.purchaseObj).subscribe((data) => {
           this.getAllProduct();
         });

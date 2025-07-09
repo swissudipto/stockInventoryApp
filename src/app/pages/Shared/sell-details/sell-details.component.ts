@@ -66,7 +66,7 @@ constructor(
 
   calculateTotalAmount(){
     this.ELEMENT_DATA.forEach(row => {
-        this.totalAmount += parseInt(row.Amount);
+        this.totalAmount += row.Amount;
     })
   }
 
