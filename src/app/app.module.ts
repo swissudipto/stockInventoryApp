@@ -31,6 +31,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { LoginComponent } from './pages/login/login.component';
 
 
 
@@ -46,7 +47,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     PurchaseDialogComponent,
     ErrorDialogComponent,
     SellDialogComponent,
-    SellDetailsComponent
+    SellDetailsComponent,
+    LoginComponent
     ],
   imports: [
     BrowserModule,

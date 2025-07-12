@@ -1,41 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="../assets/Cosmos.png" alt="Ghosh Electric Logo" height="40" width="40" class="me-2">
-      Ghosh Electric
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="dashboard"
-            >Home</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="purchase-list">Purchase</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="sale-list">Sale</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="stock">Stock</a>
-        </li>
-      </ul>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+    <a class="navbar-brand fw-bold" href="#">⚡ Ghosh Electric</a>
+    <div class="ms-auto d-flex align-items-center">
+      <a class="nav-link px-3" routerLink="dashboard">Home</a>
+      <a class="nav-link px-3" routerLink="purchase-list">Purchase</a>
+      <a class="nav-link px-3" routerLink="sale-list">Sell</a>
+      <a class="nav-link px-3" routerLink="stock">Stock</a>
+      <a class="btn btn-outline-dark ms-3" (click)="openLoginModal()">Login</a>
     </div>
-  </div>
-</nav>
-
-<div class="container">
+  </nav>
   <router-outlet></router-outlet>
-</div>
