@@ -52,7 +52,6 @@ export class PdfgenerationService {
 
 
   generateSellInvoicePdf(sellDetails: any) {
-    debugger;
       const doc = new jsPDF();
 
       doc.setFontSize(16);

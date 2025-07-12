@@ -1,4 +1,8 @@
 .customdisable{
-  color: #dbcfcf; 
-  pointer-events: none; 
+  color: #dbcfcf;
+  pointer-events: none;
+}
+
+.container{
+  margin-top: 1%;
 }

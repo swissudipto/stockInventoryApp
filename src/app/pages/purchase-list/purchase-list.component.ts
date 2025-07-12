@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { purchase } from 'src/app/Interfaces/puchase.interface';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ColDef, GridApi } from 'ag-grid-community';
@@ -14,40 +14,54 @@ import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.compon
 })
 export class PurchaseListComponent implements OnInit {
   coldefs: ColDef[] = [
-    { field: 'invoiceNo', filter: true },
-    { field: 'productName', filter: true },
-    { field: 'quantity', filter: true },
-    { field: 'invoiceAmount', filter: true },
+    {
+      field: 'purchaseId',
+      filter: true,
+      cellRenderer: (params: any) => {
+        return `<span class="clickable-link">${params.value}</span>`;
+      },
+      onCellClicked: (params: any) => {
+        if (params.event.target.classList.contains('clickable-link')) {
+          this.onLinkClick(params.data);
+        }
+      },
+    },
     { field: 'supplierName', filter: true },
-    { field: 'purchaseDate',filter: true },
+    { field: 'supplierAddress', filter: true },
+    { field: 'totalAmount', filter: true },
+    {
+      field: 'purchaseDate',
+      filter: true,
+    },
     { field: 'comment', filter: true },
   ];
 
   purchase: purchase[] = [];
   showspinner: boolean = false;
-  uniqueSuppliersNames:any;
+  uniqueSuppliersNames: any;
   gridApi: GridApi = new GridApi();
   pageSize: number = 100;
   totalRows: number = 0;
   dataSource: any;
 
-  constructor(private service: InventoryService, private dialog: MatDialog) { }
+  constructor(
+    private service: InventoryService,
+    private dialog: MatDialog,
+    private ngZone: NgZone
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   openDialog() {
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
-      data: { supplierNames: this.uniqueSuppliersNames }
+      data: { supplierNames: this.uniqueSuppliersNames },
     });
 
-    dialogRef
-      .afterClosed()
-      .subscribe((result) => {
-        console.log('Dialog Result ' + result);
-         this.gridApi.setGridOption('datasource', this.dataSource);
-         this.gridApi.paginationGoToFirstPage();    
-      });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Dialog Result ' + result);
+      this.gridApi.setGridOption('datasource', this.dataSource);
+      this.gridApi.paginationGoToFirstPage();
+    });
   }
 
   onGridReady(params: any) {
@@ -69,11 +83,23 @@ export class PurchaseListComponent implements OnInit {
             console.error('Error loading data', err);
             params.failCallback();
             this.showspinner = false;
-          }
+          },
         });
-      }
+      },
     };
 
     this.gridApi.setGridOption('datasource', this.dataSource);
+  }
+
+  onLinkClick(rowData: any) {
+    this.ngZone.run(() => {
+      const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+        data: { PuchaseDetails: rowData, readOnly: true },
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log('Dialog Result ' + result);
+      });
+    });
   }
 }

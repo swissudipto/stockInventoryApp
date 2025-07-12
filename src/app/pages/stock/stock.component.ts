@@ -15,6 +15,7 @@ coldefs: ColDef[] = [
   { field: 'productId', filter :true },
   { field: 'productName', filter :true},
   { field: 'quantity',filter :true },
+  { field: 'avarageBuyingPrice',filter :true },
 ];
 
 constructor(private service:InventoryService,private dialog :MatDialog){

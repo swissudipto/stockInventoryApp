@@ -15,11 +15,11 @@
 
 .title {
   margin: 2%;
-  background-color: rgb(255, 191, 112);
+  background-color: #f4f6f8;
   font-family: serif;
   border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
+  text-align: left;
+  font-weight: 600;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -28,4 +28,9 @@
   margin-left: 50%;
   font-weight: bold;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.wide-field {
+  width: 400px;
+  max-width: 100%;
 }

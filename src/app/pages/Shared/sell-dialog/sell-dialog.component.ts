@@ -42,7 +42,6 @@ export class SellDialogComponent {
     private dialog: MatDialog
   ) { }
   ngOnInit(): void {
-    debugger;
     this.productList = this.data.ProductList;
     this.productFilteredOptions = this.productSearch.valueChanges.pipe(
       startWith(''),
@@ -63,7 +62,6 @@ export class SellDialogComponent {
   }
 
   onSaveClick() {
-    debugger;
     if (this.sellForm.invalid) {
       this.dialog.open(ErrorDialogComponent, {
         data: 'Kindly fill all the required fileds',

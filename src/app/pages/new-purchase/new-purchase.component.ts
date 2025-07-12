@@ -44,7 +44,6 @@ export class NewPurchaseComponent {
     })
   }
   onSave() {
-    debugger;
     if (this.newProductName != '') {
       const newProduct: product = {
         id: "",
