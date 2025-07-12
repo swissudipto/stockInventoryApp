@@ -1,12 +1,20 @@
 
 export interface purchase {
     id: string;
+    PurchaseId:number;
     purchaseDate: Date | string;
-    productId: number;
-    productName: string;
-    quantity: number;
     supplierName: string;
-    invoiceAmount: string;
-    invoiceNo: string;
+    totalAmount: number;
+    supplierContactNumber: string;
+    supplierAddress: string;
     comment: string;
+    purchaseItems?: purchaseItems[];
+}
+
+export interface purchaseItems {
+    sl: number;
+    productName: string;
+    productId: number;
+    quantity: number;
+    amount: number;
 }

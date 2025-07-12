@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { purchase } from 'src/app/Interfaces/puchase.interface';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ColDef, GridApi } from 'ag-grid-community';
@@ -14,72 +14,60 @@ import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.compon
 })
 export class PurchaseListComponent implements OnInit {
   coldefs: ColDef[] = [
-    { field: 'invoiceNo', filter: true },
-    { field: 'productName', filter: true },
-    { field: 'quantity', filter: true },
-    { field: 'invoiceAmount', filter: true },
+    {
+      field: 'purchaseId',
+      filter: true,
+      cellRenderer: (params: any) => {
+        return `<span class="clickable-link">${params.value}</span>`;
+      },
+      onCellClicked: (params: any) => {
+        if (params.event.target.classList.contains('clickable-link')) {
+          this.onLinkClick(params.data);
+        }
+      },
+    },
     { field: 'supplierName', filter: true },
+    { field: 'supplierAddress', filter: true },
+    { field: 'totalAmount', filter: true },
     {
       field: 'purchaseDate',
-      //valueFormatter: function (params) {
-       // return formatDate(params.value, 'MMM d, y', 'en-US');
-     // },
-      filter: true
+      filter: true,
     },
     { field: 'comment', filter: true },
   ];
 
   purchase: purchase[] = [];
   showspinner: boolean = false;
-  uniqueSuppliersNames:any;
+  uniqueSuppliersNames: any;
   gridApi: GridApi = new GridApi();
   pageSize: number = 100;
   totalRows: number = 0;
+  dataSource: any;
 
-  constructor(private service: InventoryService, private dialog: MatDialog) { }
+  constructor(
+    private service: InventoryService,
+    private dialog: MatDialog,
+    private ngZone: NgZone
+  ) {}
 
-  ngOnInit(): void {
-    //this.getAllPurchase(1,100);
-  }
-
-  // getAllPurchase(page: number, pageSize: number) {
-  //   this.showspinner = true;
-
-  //   this.service.getallpurchase(page, pageSize).subscribe({
-  //     next: (res) => {
-  //       this.purchase = res.items;
-  //       this.totalRows = res.totalCount;
-  //       this.showspinner = false;
-  //       this.gridApi.paginationSetRowCount(this.totalRows); // Update AG Grid's total row count
-  //       this.uniqueSuppliersNames = new Set(
-  //         this.purchase.filter(p => p.supplierName.trim() !== "").map(p => p.supplierName)
-  //       );
-  //     },
-  //     error: (e) => {
-  //       this.showspinner = false;
-  //       console.warn('Purchase API call failed');
-  //       this.dialog.open(ErrorDialogComponent, { data: e.message });
-  //     }
-  //   });
-  // }
+  ngOnInit(): void {}
 
   openDialog() {
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
-      data: { supplierNames: this.uniqueSuppliersNames }
+      data: { supplierNames: this.uniqueSuppliersNames },
     });
 
-    dialogRef
-      .afterClosed()
-      .subscribe((result) => {
-        console.log('Dialog Result ' + result);
-        //this.getAllPurchase(1,100)
-      });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Dialog Result ' + result);
+      this.gridApi.setGridOption('datasource', this.dataSource);
+      this.gridApi.paginationGoToFirstPage();
+    });
   }
 
   onGridReady(params: any) {
     this.gridApi = params.api;
 
-    const dataSource = {
+    this.dataSource = {
       getRows: (params: any) => {
         const page = Math.floor(params.startRow / this.pageSize) + 1;
         this.showspinner = true;
@@ -95,18 +83,23 @@ export class PurchaseListComponent implements OnInit {
             console.error('Error loading data', err);
             params.failCallback();
             this.showspinner = false;
-          }
+          },
         });
-      }
+      },
     };
 
-    this.gridApi.setGridOption('datasource', dataSource);
+    this.gridApi.setGridOption('datasource', this.dataSource);
   }
 
-  onPaginationChanged() {
-    if (this.gridApi) {
-     // const currentPage = this.gridApi.paginationGetCurrentPage() + 1;
-      //this.getAllPurchase(currentPage, this.pageSize);
-    }
+  onLinkClick(rowData: any) {
+    this.ngZone.run(() => {
+      const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+        data: { PuchaseDetails: rowData, readOnly: true },
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log('Dialog Result ' + result);
+      });
+    });
   }
 }

@@ -57,7 +57,6 @@ export class SaleListComponent implements OnInit {
   }
 
   getAllSellData() {
-    debugger;
     this.showspinner = false;
     this.inventoryService.getallsell().subscribe({
       next: (v) => {
@@ -100,7 +99,7 @@ export class SaleListComponent implements OnInit {
   onLinkClick(rowData: any) {
     this.ngZone.run(() => {
       const dialogRef = this.dialog.open(SellDetailsComponent, {
-        data: { SellDetails: rowData, 
+        data: { SellDetails: rowData,
                 ViewDetails: true }
       });
 

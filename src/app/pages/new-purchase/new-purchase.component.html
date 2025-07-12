@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-3">
                 <label for="">Invoice No</label>
-                <input type="text" class="form-control" [(ngModel)]="purchaseObj.invoiceNo" >
+                <input type="text" class="form-control">
             </div>
             <div class="col-3">
                 <label for="">Supplier</label>
@@ -23,22 +23,22 @@
         <div class="row">
             <div class="col-3">
                 <label for="">Select Product</label>
-                <select class="form-control" [(ngModel)]="purchaseObj.productId">
+                <select class="form-control" >
                     <option value="">Select Product</option>
                     <option *ngFor="let item of productList" [value]="item.productId"> {{item.productName}}</option>
                 </select>
             </div>
-            <div class="col-3" *ngIf="purchaseObj.productId == 0">
+            <div class="col-3">
                 <label for="">New Product Name</label>
                 <input type="text" class="form-control" [(ngModel)]="newProductName"  >
             </div>
             <div class="col-3">
                 <label for="">Quantity</label>
-                <input type="number" class="form-control" [(ngModel)]="purchaseObj.quantity"  >
+                <input type="number" class="form-control"  >
             </div>
             <div class="col-3">
                 <label for="">Total Amount</label>
-                <input type="number" class="form-control" [(ngModel)]="purchaseObj.invoiceAmount"  >
+                <input type="number" class="form-control"   >
             </div>
         </div>
         <div class="row pt-3">

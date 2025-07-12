@@ -25,7 +25,7 @@ export class SellDetailsComponent implements OnInit  {
     Comment: new FormControl(''),
     invoiceNumber: new FormControl('')
   });
-  
+
   dataSource!: PeriodicElement[];
   displayedColumns: string[] = ['demo-position', 'demo-Product', 'demo-Quantity', 'demo-Amount'];
   ELEMENT_DATA: PeriodicElement[] = [];
@@ -39,7 +39,6 @@ constructor(
   }
 
   ngOnInit(): void {
-    debugger;
       this.sellForm.controls.invoiceNumber.setValue(this.data.SellDetails.invoiceNo);
       this.sellForm.controls.customerName.setValue(this.data.SellDetails.customerName);
       this.sellForm.controls.customerAddress.setValue(this.data.SellDetails.customerAddress);
@@ -61,17 +60,16 @@ constructor(
       Quantity: this.data.SellDetails.quantity,
       Amount: this.data.SellDetails.sellAmount
     };
-   this.ELEMENT_DATA.push(newProductRow);   
+   this.ELEMENT_DATA.push(newProductRow);
   }
 
   calculateTotalAmount(){
     this.ELEMENT_DATA.forEach(row => {
-        this.totalAmount += parseInt(row.Amount);
+        this.totalAmount += row.Amount;
     })
   }
 
   downloadReceipt(){
-    debugger;
     this.pdfservice.generateSellInvoicePdf(this.data.SellDetails);
   }
 

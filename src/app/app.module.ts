@@ -28,6 +28,11 @@ import { ErrorDialogComponent } from './pages/Shared/error-dialog/error-dialog.c
 import { SellDialogComponent } from './pages/Shared/sell-dialog/sell-dialog.component';
 import { SellDetailsComponent } from './pages/Shared/sell-details/sell-details.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+
 
 @NgModule({
   declarations: [
@@ -62,7 +67,10 @@ import { MatTableModule } from '@angular/material/table';
     NgxMatSelectSearchModule,
     MatAutocompleteModule,
     MatDialogModule,
-    MatTableModule
+    MatTableModule,
+    MatBadgeModule,
+    MatIconModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent],

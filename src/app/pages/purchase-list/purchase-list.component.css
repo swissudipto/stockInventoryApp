@@ -25,7 +25,7 @@ header .logo {
 header h1 {
     font-weight:300;
     font-size:24px;
-    color:#eee;	
+    color:#eee;
 	letter-spacing:2px;
 	text-align:center;
 	text-transform:uppercase;
@@ -682,4 +682,10 @@ body {
     margin-left: -50px;
     margin-top: -50px;
     background-size: 100%;
+}
+
+::ng-deep .clickable-link {
+  color: rgb(29, 145, 173);
+  text-decoration: underline;
+  cursor: pointer;
 }
