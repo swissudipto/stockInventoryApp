@@ -1,14 +1,14 @@
-<div class="row">
-  <div class="col-12 text-end" style="margin-top: 1%;">
-    <button class="btn btn-sm btn-success" (click)="openDialog()">
-      <i class="bi bi-building-add"></i>
-      New Purchase
-    </button>
+<div class="purchaseContainer">
+  <div class="row">
+    <div class="col-12 text-end">
+      <button class="btn btn-sm btn-success" (click)="openDialog()">
+        <i class="bi bi-building-add"></i>
+        New Purchase
+      </button>
+    </div>
   </div>
-</div>
-<br>
+  <br />
 
-<div class="row">
   <ag-grid-angular
     class="ag-theme-quartz"
     style="height: 500px"
@@ -17,7 +17,6 @@
     [cacheBlockSize]="pageSize"
     [paginationPageSize]="pageSize"
     (gridReady)="onGridReady($event)">
-  >
   </ag-grid-angular>
 </div>
 

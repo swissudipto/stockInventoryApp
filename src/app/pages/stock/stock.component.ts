@@ -12,7 +12,6 @@ import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.compon
 export class StockComponent implements OnInit {
 stocklist: any[]=[];
 coldefs: ColDef[] = [
-  { field: 'productId', filter :true },
   { field: 'productName', filter :true},
   { field: 'quantity',filter :true },
   { field: 'avarageBuyingPrice',filter :true },
