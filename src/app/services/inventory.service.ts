@@ -37,6 +37,10 @@ export class InventoryService {
     return this.client.get(`${this.apiUrl}/getallsell`);
   }
 
+  getallsells(pageNumber: Number,pageSize: Number): Observable<any> {
+    return this.client.get(`${this.apiUrl}/getallsell?page=${pageNumber}&pageSize=${pageSize}`);
+  }
+
   saveNewProduct(newProduct: product): Observable<product> {
     return this.client.post<product>(`${this.apiUrl}/saveProduct`, newProduct);
   }

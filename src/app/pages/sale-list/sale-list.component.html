@@ -1,23 +1,27 @@
-<div class="row">
-  <div class="col-12 text-end" style="margin-top: 1%;">
-    <button class="btn btn-sm btn-success" (click)="openDialog()">
-      <i class="bi bi-cart"></i>
-      New Sell
-    </button>
+<div class="sellContainer">
+  <div class="row">
+    <div class="col-12 text-end">
+      <button class="btn btn-sm btn-success" (click)="openDialog()">
+        <i class="bi bi-cart"></i>
+        New Sell
+      </button>
+    </div>
+  </div>
+  <br />
+
+  <div class="row">
+    <ag-grid-angular
+      class="ag-theme-quartz"
+      style="height: 500px"
+      [columnDefs]="coldefs"
+      [rowModelType]="'infinite'"
+      [cacheBlockSize]="pageSize"
+      [paginationPageSize]="pageSize"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
   </div>
 </div>
-<br>
-
-<div class="row">
-  <ag-grid-angular
-    class="ag-theme-quartz"
-    style="height: 500px"
-    [columnDefs]="coldefs"
-    [rowData]="sellList"
-  >
-  </ag-grid-angular>
-</div>
-
 <div *ngIf="showspinner" class="spinner-border customspinner" role="status">
   <span class="sr-only"></span>
 </div>
