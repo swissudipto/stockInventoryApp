@@ -10,6 +10,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 import { sell, sellItem } from 'src/app/Interfaces/sell.interface';
 import { stock } from 'src/app/Interfaces/stock.interface';
+import { PdfgenerationService } from 'src/app/services/pdfgeneration.service';
 
 @Component({
   selector: 'app-sell-dialog',
@@ -51,36 +52,22 @@ export class SellDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private service: InventoryService,
     private dialogRef: MatDialogRef<SellDialogComponent>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private pdfservice: PdfgenerationService
   ) {}
   ngOnInit(): void {
-    this.productList = this.data.ProductList;
-    this.productFilteredOptions =
-      this.sellForm.controls.productName.valueChanges.pipe(
-        startWith(''),
-        map((value) => this._filterProduct(value || ''))
-      );
-
-    if (this.data.ViewDetails != undefined && this.data.ViewDetails === true) {
-      this.sellForm.controls.customerName.setValue(
-        this.data.SellDetails.customerName
-      );
-      this.sellForm.controls.customerAddress.setValue(
-        this.data.SellDetails.customerAddress
-      );
-      this.sellForm.controls.phoneNumber.setValue(
-        this.data.SellDetails.phoneNumber
-      );
-      this.sellForm.controls.productName.setValue(
-        this.data.SellDetails.productName
-      );
-      this.sellForm.controls.quantity.setValue(this.data.SellDetails.quantity);
-      this.sellForm.controls.sellAmount.setValue(
-        this.data.SellDetails.sellAmount
-      );
-      this.sellForm.controls.sellDate.setValue(this.data.SellDetails.sellDate);
-      this.sellForm.controls.Comment.setValue(this.data.SellDetails.comment);
+    if (this.data.readOnly ?? false) {
+      this.viewOnly = true;
+      this.bindAllValues(this.data.sellDetails);
       this.sellForm.disable();
+    } else {
+      this.viewOnly = false;
+      this.productList = this.data.ProductList;
+      this.productFilteredOptions =
+        this.sellForm.controls.productName.valueChanges.pipe(
+          startWith(''),
+          map((value) => this._filterProduct(value || ''))
+        );
     }
   }
 
@@ -146,6 +133,36 @@ export class SellDialogComponent {
   }
 
   addNewRow() {
+    if (
+      this.sellForm.value.productName == null ||
+      this.sellForm.value.productName == '' ||
+      this.sellForm.value.productId == null ||
+      this.sellForm.value.productId < 1 ||
+      this.sellForm.value.quantity == null ||
+      this.sellForm.value.quantity < 1 ||
+      this.sellForm.value.sellAmount == null ||
+      this.sellForm.value.sellAmount == '' ||
+      Number.isNaN(this.sellForm.value.sellAmount)
+    ) {
+      this.dialog.open(ErrorDialogComponent, {
+        data: 'Kindly fill the Item details properly!',
+      });
+      return;
+    }
+
+    // Duplicate Item Check
+    for (const element of this.ELEMENT_DATA) {
+      if (
+        element.productName.trim().toUpperCase() ===
+        (this.sellForm.controls.productName?.value ?? '').trim().toUpperCase()
+      ) {
+        this.dialog.open(ErrorDialogComponent, {
+          data: 'The Item is already added!',
+        });
+        return;
+      }
+    }
+
     const newSellRow: sellItem = {
       sl: this.ELEMENT_DATA.length + 1,
       productName: this.sellForm.value.productName
@@ -178,5 +195,23 @@ export class SellDialogComponent {
     }));
     this.dataSource = [...this.ELEMENT_DATA];
     this.calculateTotalAmount();
+  }
+
+  bindAllValues(sellDetails: sell) {
+    this.sellForm.controls.customerName.setValue(sellDetails.customerName);
+    this.sellForm.controls.phoneNumber.setValue(sellDetails.phoneNumber);
+    this.sellForm.controls.customerAddress.setValue(
+      sellDetails.customerAddress
+    );
+    this.sellForm.controls.sellDate.setValue(sellDetails.sellDate.toString());
+    this.totalAmount = sellDetails.totalAmount;
+    this.sellForm.controls.Comment.setValue(sellDetails.comment);
+    this.ELEMENT_DATA = sellDetails.sellItems ?? [];
+    this.dataSource = [...this.ELEMENT_DATA];
+  }
+
+
+  downloadReceipt(){
+    this.pdfservice.generateSellInvoicePdf(this.data.sellDetails);
   }
 }

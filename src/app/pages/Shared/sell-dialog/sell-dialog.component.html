@@ -1,4 +1,5 @@
-<h2 class="title" mat-dialog-tittle>New Sell</h2>
+<h2 class="title" mat-dialog-tittle *ngIf="!viewOnly">New Sell</h2>
+<h2 class="title" mat-dialog-tittle *ngIf="viewOnly">Sell Details</h2>
 <form mat-dialog-content [formGroup]="sellForm">
   <h3>Customer Information :</h3>
   <div fxLayout="row" fxLayoutGap="10px">
@@ -46,7 +47,7 @@
     </mat-form-field>
   </div>
   <h3>Item Details:</h3>
-  <div fxLayout="row" fxLayoutGap="10px">
+  <div fxLayout="row" fxLayoutGap="10px" *ngIf="!viewOnly">
     <mat-form-field>
       <mat-label>Product Name: </mat-label>
       <input
@@ -151,7 +152,8 @@
 </form>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button (click)="onSaveClick()">Save Sell</button>
+  <button mat-button (click)="onSaveClick()" *ngIf="!viewOnly">Save Sell</button>
+  <button mat-button (click)="downloadReceipt()" *ngIf="viewOnly">Download</button>
   <h3 class="totalarea">Total Amount ₹{{ this.totalAmount }}</h3>
 </div>
 <div *ngIf="showspinner" class="spinner-border customspinner" role="status">
