@@ -37,7 +37,6 @@ export class PurchaseListComponent implements OnInit {
   ];
 
   purchase: purchase[] = [];
-  showspinner: boolean = false;
   uniqueSuppliersNames: any;
   gridApi: GridApi = new GridApi();
   pageSize: number = 100;
@@ -66,23 +65,27 @@ export class PurchaseListComponent implements OnInit {
 
   onGridReady(params: any) {
     this.gridApi = params.api;
+    this.gridApi.showLoadingOverlay();
 
     this.dataSource = {
       getRows: (params: any) => {
         const page = Math.floor(params.startRow / this.pageSize) + 1;
-        this.showspinner = true;
+
         this.service.getallpurchase(page, this.pageSize).subscribe({
           next: (res) => {
-            this.showspinner = false;
             // Defer the callback to avoid render conflict
             setTimeout(() => {
               params.successCallback(res.items, res.totalCount);
+              this.gridApi.hideOverlay();
             }, 0);
           },
           error: (err) => {
             console.error('Error loading data', err);
             params.failCallback();
-            this.showspinner = false;
+            this.gridApi.hideOverlay();
+            this.dialog.open(ErrorDialogComponent, {
+              data: err,
+            });
           },
         });
       },

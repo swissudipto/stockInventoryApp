@@ -16,6 +16,7 @@ coldefs: ColDef[] = [
   { field: 'quantity',filter :true },
   { field: 'avarageBuyingPrice',filter :true },
 ];
+showspinner:boolean = false;
 
 constructor(private service:InventoryService,private dialog :MatDialog){
 }
@@ -25,12 +26,15 @@ ngOnInit(): void {
 }
 
 loadallstock(){
+  this.showspinner = true;
   this.service.getallStock().subscribe({
     next : (v) => {
       this.stocklist = v;
+        this.showspinner = false;
     },
     error : (e) => {
       console.warn(e);
+      this.showspinner = false;
       this.dialog.open(ErrorDialogComponent,{data:e.message});
     }
   });
