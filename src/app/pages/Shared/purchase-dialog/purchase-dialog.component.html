@@ -173,7 +173,9 @@
 </form>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button *ngIf="!viewOnly" (click)="onSaveClick()">Save Purchase</button>
+  <button mat-button *ngIf="!viewOnly && !editMode" (click)="onSaveClick()">Save Purchase</button>
+  <button mat-button *ngIf="viewOnly" (click)="onEditClick()">Edit</button>
+  <button mat-button mat-dialog-close *ngIf="editMode" (click)="onSaveClick()">Save Changes</button>
   <h3 class="totalarea">Total Amount ₹{{ this.totalAmount }}</h3>
 </div>
 <div *ngIf="showspinner" class="spinner-border customspinner" role="status">

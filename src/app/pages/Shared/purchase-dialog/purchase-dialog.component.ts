@@ -52,6 +52,7 @@ export class PurchaseDialogComponent implements OnInit {
   ELEMENT_DATA: purchaseItems[] = [];
   totalAmount: number = 0;
   viewOnly: boolean = false;
+  editMode:boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -59,21 +60,19 @@ export class PurchaseDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<PurchaseDialogComponent>,
     private dialog: MatDialog
   ) {}
-  ngOnInit(): void {
-    console.log(this.data);
-
+  ngOnInit(): void{
+    this.getAllProduct();
+          this.filteredOptions =
+        this.purchaseForm.controls.productSearch.valueChanges.pipe(
+          startWith(''),
+          map((value) => this._filter(value || ''))
+        );
     if (this.data.readOnly ?? false) {
       this.viewOnly = true;
       this.bindAllValues(this.data.PuchaseDetails);
       this.purchaseForm.disable();
     } else {
       this.viewOnly = false;
-      this.getAllProduct();
-      this.filteredOptions =
-        this.purchaseForm.controls.productSearch.valueChanges.pipe(
-          startWith(''),
-          map((value) => this._filter(value || ''))
-        );
       // this.supplierFilteredOptions = this.supplierSearch.valueChanges.pipe(
       //   startWith(''),
       //   map((value) => this._filterSupplier(value || ''))
@@ -115,8 +114,10 @@ export class PurchaseDialogComponent implements OnInit {
       totalAmount: this.totalAmount,
       PurchaseId: 0,
     };
-
-    this.service.savenewpurchase(newPurchase).subscribe({
+    
+    if(this.editMode){
+      newPurchase.id = this.data.PuchaseDetails.id;
+      this.service.editPurchase(newPurchase).subscribe({
       next: (v) => {
         console.log(v);
         this.showspinner = this.showspinner ? false : false;
@@ -128,6 +129,20 @@ export class PurchaseDialogComponent implements OnInit {
         this.dialog.open(ErrorDialogComponent, { data: e.message });
       },
     });
+    }else{
+      this.service.savenewpurchase(newPurchase).subscribe({
+      next: (v) => {
+        console.log(v);
+        this.showspinner = this.showspinner ? false : false;
+        this.dialogRef.close();
+      },
+      error: (e) => {
+        console.log(e);
+        this.showspinner = this.showspinner ? false : false;
+        this.dialog.open(ErrorDialogComponent, { data: e.message });
+      },
+    });
+    }
   }
 
   getAllProduct() {
@@ -321,5 +336,11 @@ export class PurchaseDialogComponent implements OnInit {
     this.purchaseForm.controls.Comment.setValue(PurchaseDetails.comment);
     this.ELEMENT_DATA = PurchaseDetails.purchaseItems ?? [];
     this.dataSource = [...this.ELEMENT_DATA];
+  }
+
+  onEditClick(){
+    this.purchaseForm.enable();
+    this.viewOnly = false;
+    this.editMode = true;
   }
 }

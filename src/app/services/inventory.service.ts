@@ -25,6 +25,13 @@ export class InventoryService {
     );
   }
 
+  editPurchase(editedPurchase: purchase): Observable<purchase> {
+    return this.client.post<purchase>(
+      `${this.apiUrl}/editPurchase`,
+      editedPurchase
+    );
+  }
+
   getallproducts(): Observable<product[]> {
     return this.client.get<product[]>(`${this.apiUrl}/getallProducts`);
   }
@@ -47,5 +54,9 @@ export class InventoryService {
 
   saveNewSell(newSell: sell): Observable<sell> {
     return this.client.post<sell>(`${this.apiUrl}/savesell`, newSell);
+  }
+
+  editSell(newSell: sell): Observable<sell> {
+    return this.client.post<sell>(`${this.apiUrl}/editSell`, newSell);
   }
 }
