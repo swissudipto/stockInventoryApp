@@ -47,6 +47,8 @@ export class SellDialogComponent {
   ELEMENT_DATA: sellItem[] = [];
   totalAmount: number = 0;
   viewOnly: boolean = false;
+  editMode: boolean = false;
+  inStockProductList: stock[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -54,20 +56,21 @@ export class SellDialogComponent {
     private dialogRef: MatDialogRef<SellDialogComponent>,
     private dialog: MatDialog,
     private pdfservice: PdfgenerationService
-  ) {}
+  ) { }
+
   ngOnInit(): void {
+    this.getInStockProducts();
+    this.productFilteredOptions =
+      this.sellForm.controls.productName.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filterProduct(value || ''))
+      );
     if (this.data.readOnly ?? false) {
       this.viewOnly = true;
       this.bindAllValues(this.data.sellDetails);
       this.sellForm.disable();
     } else {
       this.viewOnly = false;
-      this.productList = this.data.ProductList;
-      this.productFilteredOptions =
-        this.sellForm.controls.productName.valueChanges.pipe(
-          startWith(''),
-          map((value) => this._filterProduct(value || ''))
-        );
     }
   }
 
@@ -102,20 +105,42 @@ export class SellDialogComponent {
       totalAmount: this.totalAmount,
     };
 
-    this.service.saveNewSell(newSell).subscribe({
-      next: (v) => {
-        this.showspinner = this.showspinner ? false : false;
-        this.dialogRef.close();
-      },
-      error: (e) => {
-        this.showspinner = this.showspinner ? false : false;
-        this.dialog.open(ErrorDialogComponent, { data: e.error });
-      },
-    });
+    if (this.editMode) {
+      newSell.id = this.data.sellDetails.id;
+      this.service.editSell(newSell).subscribe({
+        next: (v) => {
+          this.showspinner = this.showspinner ? false : false;
+          this.dialogRef.close();
+        },
+        error: (e) => {
+          this.showspinner = this.showspinner ? false : false;
+          var appendedErrors;
+          if (typeof (e.error.errors) != "undefined" && e.error.errors.length > 0) {
+            appendedErrors = e.error.errors.map((error: any) => error['errorMessage']).join();
+          }
+          this.dialog.open(ErrorDialogComponent, { data: appendedErrors == undefined ? e.message : appendedErrors });
+        }
+      });
+    } else {
+      this.service.saveNewSell(newSell).subscribe({
+        next: (v) => {
+          this.showspinner = this.showspinner ? false : false;
+          this.dialogRef.close();
+        },
+        error: (e) => {
+          this.showspinner = this.showspinner ? false : false;
+          var appendedErrors;
+          if (typeof (e.error.errors) != "undefined" && e.error.errors.length > 0) {
+            appendedErrors = e.error.errors.map((error: any) => error['errorMessage']).join();
+          }
+          this.dialog.open(ErrorDialogComponent, { data: appendedErrors == undefined ? e.message : appendedErrors });
+        }
+      });
+    }
   }
 
   private _filterProduct(value: string): any[] {
-    return this.productList.filter((option) =>
+    return this.inStockProductList.filter((option) =>
       option.productName.toLowerCase().includes(value.toLowerCase())
     );
   }
@@ -211,7 +236,27 @@ export class SellDialogComponent {
   }
 
 
-  downloadReceipt(){
+  downloadReceipt() {
     this.pdfservice.generateSellInvoicePdf(this.data.sellDetails);
+  }
+
+    getInStockProducts() {
+    this.service.getallStock().subscribe({
+      next: (v) => {
+        this.inStockProductList = v;
+        this.inStockProductList = this.inStockProductList.filter(
+          (x) => x.quantity > 0
+        );
+      },
+      error: (e) => {
+        this.dialog.open(ErrorDialogComponent, { data: e.message });
+      }
+    });
+  }
+
+  onEditClick() {
+    this.sellForm.enable();
+    this.viewOnly = false;
+    this.editMode = true;
   }
 }
