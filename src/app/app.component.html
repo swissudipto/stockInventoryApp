@@ -2,10 +2,11 @@
     <a class="navbar-brand fw-bold" href="#">⚡ Ghosh Electric</a>
     <div class="ms-auto d-flex align-items-center">
       <a class="nav-link px-3" routerLink="Dashboard">Home</a>
-      <a class="nav-link px-3" routerLink="PurchaseList">Purchase</a>
-      <a class="nav-link px-3" routerLink="SaleList">Sell</a>
-      <a class="nav-link px-3" routerLink="Stock">Stock</a>
-      <a class="btn btn-outline-dark ms-3" (click)="openLoginModal()">Login</a>
+      <a *ngIf="loggedInRole === 'Admin'" class="nav-link px-3" routerLink="PurchaseList">Purchase</a>
+      <a *ngIf="loggedInRole === 'Admin' || loggedInRole === 'Staff'" class="nav-link px-3" routerLink="SaleList">Sell</a>
+      <a *ngIf="loggedInRole === 'Admin'" class="nav-link px-3" routerLink="Stock">Stock</a>
+      <a *ngIf="!isLoggedIn" class="btn btn-outline-dark ms-3" (click)="openLoginModal()">Login</a>
+      <a *ngIf="isLoggedIn" class="btn btn-outline-dark ms-3" (click)="logout()">Logout</a>  
     </div>
   </nav>
   <router-outlet></router-outlet>

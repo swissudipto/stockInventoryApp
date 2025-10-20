@@ -4,6 +4,8 @@ import { PurchaseListComponent } from './pages/purchase-list/purchase-list.compo
 import { SaleListComponent } from './pages/sale-list/sale-list.component';
 import { StockComponent } from './pages/stock/stock.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { RoleBasedAuthGuard } from './guards/roleBasedAuth.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -12,15 +14,18 @@ const routes: Routes = [
   },
   {
     path : 'PurchaseList',
-    component :PurchaseListComponent
+    component :PurchaseListComponent,
+    canActivate: [RoleBasedAuthGuard]
   },
   {
     path : 'SaleList',
-    component :SaleListComponent
+    component :SaleListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path : 'Stock',
-    component :StockComponent
+    component :StockComponent,
+    canActivate: [RoleBasedAuthGuard]
   },
   {
     path : 'Dashboard',
