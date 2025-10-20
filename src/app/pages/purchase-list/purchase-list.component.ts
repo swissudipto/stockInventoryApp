@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { purchase } from 'src/app/Interfaces/puchase.interface';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ColDef, GridApi } from 'ag-grid-community';
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../Shared/purchase-dialog/purchase-dialog.component';
 import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.component';
@@ -13,6 +13,7 @@ import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.compon
   styleUrls: ['./purchase-list.component.css'],
 })
 export class PurchaseListComponent implements OnInit {
+  datePipe = new DatePipe('en-GB');
   coldefs: ColDef[] = [
     {
       field: 'purchaseId',
@@ -32,6 +33,12 @@ export class PurchaseListComponent implements OnInit {
     {
       field: 'purchaseDate',
       filter: true,
+      
+      valueFormatter: (params: any): string => {
+        const value = params.value;
+        if (!value) return '—';
+        return this.datePipe.transform(value, 'dd-MM-yyyy HH:mm') || '—';
+      }
     },
     { field: 'comment', filter: true },
   ];
@@ -47,9 +54,9 @@ export class PurchaseListComponent implements OnInit {
     private service: InventoryService,
     private dialog: MatDialog,
     private ngZone: NgZone
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   openDialog() {
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
@@ -80,12 +87,17 @@ export class PurchaseListComponent implements OnInit {
             }, 0);
           },
           error: (err) => {
+            debugger;
+            var errorMessege = '';
             console.error('Error loading data', err);
+            if (err['status'] == 401) {
+              errorMessege = 'User Unauthorised';
+            } else {
+              errorMessege = err['message'];
+            }
+            this.dialog.open(ErrorDialogComponent, { data: errorMessege });
             params.failCallback();
             this.gridApi.hideOverlay();
-            this.dialog.open(ErrorDialogComponent, {
-              data: err,
-            });
           },
         });
       },

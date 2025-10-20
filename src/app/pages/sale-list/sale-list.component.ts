@@ -7,6 +7,7 @@ import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.compon
 import { SellDialogComponent } from '../Shared/sell-dialog/sell-dialog.component';
 import { stock } from 'src/app/Interfaces/stock.interface';
 import { SellDetailsComponent } from '../Shared/sell-details/sell-details.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-sale-list',
@@ -14,6 +15,7 @@ import { SellDetailsComponent } from '../Shared/sell-details/sell-details.compon
   styleUrls: ['./sale-list.component.css'],
 })
 export class SaleListComponent implements OnInit {
+  datePipe = new DatePipe('en-GB');
   coldefs: ColDef[] = [
     {
       field: 'invoiceNo',
@@ -35,6 +37,11 @@ export class SaleListComponent implements OnInit {
     {
       field: 'sellDate',
       filter: true,
+      valueFormatter: (params: any): string => {
+        const value = params.value;
+        if (!value) return '—';
+        return this.datePipe.transform(value, 'dd-MM-yyyy HH:mm') || '—';
+      }
     },
   ];
 
@@ -49,7 +56,7 @@ export class SaleListComponent implements OnInit {
     private dialog: MatDialog,
     private inventoryService: InventoryService,
     private ngZone: NgZone
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getInStockProducts();
@@ -71,11 +78,17 @@ export class SaleListComponent implements OnInit {
             }, 0);
           },
           error: (err) => {
+            var errorMessege = '';
             console.error('Error loading data', err);
+            if (err['status'] == 401) {
+              errorMessege = 'User Unauthorised';
+            } else {
+              errorMessege = err['message'];
+            }
             params.failCallback();
             this.gridApi.hideOverlay();
             this.dialog.open(ErrorDialogComponent, {
-              data: err,
+              data: errorMessege,
             });
           },
         });
@@ -106,7 +119,14 @@ export class SaleListComponent implements OnInit {
         );
       },
       error: (e) => {
-        this.dialog.open(ErrorDialogComponent, { data: e.message });
+        var errorMessege = '';
+        console.error('Error loading data', e);
+        if (e['status'] == 401) {
+          errorMessege = 'User Unauthorised';
+        } else {
+          errorMessege = e['message'];
+        }
+        this.dialog.open(ErrorDialogComponent, { data: errorMessege });
       },
     });
   }

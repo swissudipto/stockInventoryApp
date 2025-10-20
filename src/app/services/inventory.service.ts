@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { purchase } from '../Interfaces/puchase.interface';
 import { product } from '../Interfaces/product.interface';
 import { stock } from '../Interfaces/stock.interface';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { sell } from '../Interfaces/sell.interface';
 
 @Injectable({
