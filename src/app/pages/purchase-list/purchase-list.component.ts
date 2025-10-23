@@ -6,6 +6,7 @@ import { DatePipe, formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../Shared/purchase-dialog/purchase-dialog.component';
 import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-purchase-list',
@@ -53,21 +54,23 @@ export class PurchaseListComponent implements OnInit {
   constructor(
     private service: InventoryService,
     private dialog: MatDialog,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router
   ) { }
 
   ngOnInit(): void { }
 
   openDialog() {
-    const dialogRef = this.dialog.open(PurchaseDialogComponent, {
-      data: { supplierNames: this.uniqueSuppliersNames },
-    });
+    // const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+    //   data: { supplierNames: this.uniqueSuppliersNames },
+    // });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog Result ' + result);
-      this.gridApi.setGridOption('datasource', this.dataSource);
-      this.gridApi.paginationGoToFirstPage();
-    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   console.log('Dialog Result ' + result);
+    //   this.gridApi.setGridOption('datasource', this.dataSource);
+    //   this.gridApi.paginationGoToFirstPage();
+    // });
+    this.router.navigate(['/NewPurchase']);
   }
 
   onGridReady(params: any) {

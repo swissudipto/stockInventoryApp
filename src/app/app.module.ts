@@ -29,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { NewPurchasePageComponent } from './pages/new-purchase-page/new-purchase-page.component';
 
 export const MY_DATE_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -51,7 +52,8 @@ export const MY_DATE_FORMATS = {
     ErrorDialogComponent,
     SellDialogComponent,
     SellDetailsComponent,
-    LoginComponent
+    LoginComponent,
+    NewPurchasePageComponent
   ],
   imports: [
     BrowserModule,

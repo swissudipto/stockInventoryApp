@@ -6,6 +6,7 @@ import { StockComponent } from './pages/stock/stock.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RoleBasedAuthGuard } from './guards/roleBasedAuth.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { NewPurchasePageComponent } from './pages/new-purchase-page/new-purchase-page.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,11 @@ const routes: Routes = [
   {
     path : 'Dashboard',
     component :DashboardComponent
+  },
+  {
+    path : 'NewPurchase',
+    component : NewPurchasePageComponent,
+    canActivate: [AuthGuard]
   }
 ];
 
