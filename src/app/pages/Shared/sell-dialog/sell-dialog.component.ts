@@ -100,7 +100,7 @@ export class SellDialogComponent {
         ? this.sellForm.value.phoneNumber
         : '',
       invoiceNo: '',
-      id: '',
+      id: 0,
       sellItems: this.dataSource,
       totalAmount: this.totalAmount,
     };
