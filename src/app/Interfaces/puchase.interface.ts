@@ -1,6 +1,6 @@
 
 export interface purchase {
-    id: string;
+    id: number;
     PurchaseId:number;
     purchaseDate: Date | string;
     supplierName: string;

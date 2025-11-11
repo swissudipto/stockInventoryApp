@@ -34,12 +34,10 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    debugger;
     return !!this.getToken();
   }
 
   getUserRole(): string | null {
-    debugger;
     const token = this.getToken();
     if (!token) return null;
 
