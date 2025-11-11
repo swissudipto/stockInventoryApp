@@ -1,5 +1,5 @@
 export interface sell {
-  id: string;
+  id: number;
   customerName: string;
   customerAddress: string;
   phoneNumber: string;

@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    debugger;
     this.loggedInRole = this.authService.getUserRole() ??'';
     this.isLoggedIn = this.authService.isAuthenticated();
   }

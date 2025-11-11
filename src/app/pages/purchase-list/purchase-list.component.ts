@@ -87,7 +87,6 @@ export class PurchaseListComponent implements OnInit {
             }, 0);
           },
           error: (err) => {
-            debugger;
             var errorMessege = '';
             console.error('Error loading data', err);
             if (err['status'] == 401) {

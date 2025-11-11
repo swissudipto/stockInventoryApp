@@ -109,7 +109,7 @@ export class PurchaseDialogComponent implements OnInit {
       comment: this.purchaseForm.value.Comment
         ? this.purchaseForm.value.Comment
         : '',
-      id: '',
+      id: 0,
       purchaseItems: this.dataSource,
       totalAmount: this.totalAmount,
       PurchaseId: 0,
@@ -117,6 +117,7 @@ export class PurchaseDialogComponent implements OnInit {
     
     if(this.editMode){
       newPurchase.id = this.data.PuchaseDetails.id;
+      newPurchase.PurchaseId = this.data.PuchaseDetails.purchaseId;
       this.service.editPurchase(newPurchase).subscribe({
       next: (v) => {
         console.log(v);
