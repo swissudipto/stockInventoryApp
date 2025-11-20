@@ -34,7 +34,7 @@ export class PurchaseListComponent implements OnInit {
     {
       field: 'purchaseDate',
       filter: true,
-      
+
       valueFormatter: (params: any): string => {
         const value = params.value;
         if (!value) return '—';
@@ -90,16 +90,21 @@ export class PurchaseListComponent implements OnInit {
             }, 0);
           },
           error: (err) => {
+            debugger;
             var errorMessege = '';
             console.error('Error loading data', err);
             if (err['status'] == 401) {
               errorMessege = 'User Unauthorised';
+              window.location.reload()
             } else {
               errorMessege = err['message'];
             }
-            this.dialog.open(ErrorDialogComponent, { data: errorMessege });
             params.failCallback();
             this.gridApi.hideOverlay();
+            this.dialog.open(ErrorDialogComponent, {
+               data: errorMessege
+               });
+
           },
         });
       },

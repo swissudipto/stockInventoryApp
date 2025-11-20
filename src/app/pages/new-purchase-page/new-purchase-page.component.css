@@ -1,0 +1,7 @@
+.text-blue-500 {
+  color: #3b82f6;
+}
+
+.text-blue-500:hover {
+  text-decoration: underline;
+}
