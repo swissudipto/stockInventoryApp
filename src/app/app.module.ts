@@ -29,6 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 
 export const MY_DATE_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -74,7 +76,9 @@ export const MY_DATE_FORMATS = {
     MatTableModule,
     MatBadgeModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDividerModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
               { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },

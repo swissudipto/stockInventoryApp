@@ -11,6 +11,7 @@ import { purchase, purchaseItems } from 'src/app/Interfaces/puchase.interface';
 import { map, Observable, startWith } from 'rxjs';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 import { formatDate } from '@angular/common';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-purchase-dialog',
@@ -24,7 +25,7 @@ export class PurchaseDialogComponent implements OnInit {
     supplierName: new FormControl('', [Validators.required]),
     purchaseDate: new FormControl(''),
     quantity: new FormControl<number>(0),
-    itemAmount: new FormControl(''),
+    itemAmount: new FormControl<number>(0),
     productname: new FormControl(''),
     productSearch: new FormControl(''),
     newProductName: new FormControl(''),
@@ -49,10 +50,11 @@ export class PurchaseDialogComponent implements OnInit {
     'demo-Amount',
     'actions',
   ];
+  serialNumbers: Set<string> = new Set<string>();
   ELEMENT_DATA: purchaseItems[] = [];
   totalAmount: number = 0;
   viewOnly: boolean = false;
-  editMode:boolean = false;
+  editMode: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -60,13 +62,13 @@ export class PurchaseDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<PurchaseDialogComponent>,
     private dialog: MatDialog
   ) {}
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.getAllProduct();
-          this.filteredOptions =
-        this.purchaseForm.controls.productSearch.valueChanges.pipe(
-          startWith(''),
-          map((value) => this._filter(value || ''))
-        );
+    this.filteredOptions =
+      this.purchaseForm.controls.productSearch.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value || ''))
+      );
     if (this.data.readOnly ?? false) {
       this.viewOnly = true;
       this.bindAllValues(this.data.PuchaseDetails);
@@ -110,39 +112,43 @@ export class PurchaseDialogComponent implements OnInit {
         ? this.purchaseForm.value.Comment
         : '',
       id: 0,
-      purchaseItems: this.dataSource,
-      totalAmount: this.totalAmount,
       PurchaseId: 0,
+      serialNumbers: [...this.serialNumbers],
+      productName: this.dataSource[0].productName,
+      productId: this.dataSource[0].productId,
+      quantity: this.dataSource[0].quantity,
+      amount: this.dataSource[0].amount,
+      totalAmount: this.totalAmount
     };
-    
-    if(this.editMode){
+
+    if (this.editMode) {
       newPurchase.id = this.data.PuchaseDetails.id;
       newPurchase.PurchaseId = this.data.PuchaseDetails.purchaseId;
       this.service.editPurchase(newPurchase).subscribe({
-      next: (v) => {
-        console.log(v);
-        this.showspinner = this.showspinner ? false : false;
-        this.dialogRef.close();
-      },
-      error: (e) => {
-        console.log(e);
-        this.showspinner = this.showspinner ? false : false;
-        this.dialog.open(ErrorDialogComponent, { data: e.message });
-      },
-    });
-    }else{
+        next: (v) => {
+          console.log(v);
+          this.showspinner = this.showspinner ? false : false;
+          this.dialogRef.close();
+        },
+        error: (e) => {
+          console.log(e);
+          this.showspinner = this.showspinner ? false : false;
+          this.dialog.open(ErrorDialogComponent, { data: e.message });
+        },
+      });
+    } else {
       this.service.savenewpurchase(newPurchase).subscribe({
-      next: (v) => {
-        console.log(v);
-        this.showspinner = this.showspinner ? false : false;
-        this.dialogRef.close();
-      },
-      error: (e) => {
-        console.log(e);
-        this.showspinner = this.showspinner ? false : false;
-        this.dialog.open(ErrorDialogComponent, { data: e.message });
-      },
-    });
+        next: (v) => {
+          console.log(v);
+          this.showspinner = this.showspinner ? false : false;
+          this.dialogRef.close();
+        },
+        error: (e) => {
+          console.log(e);
+          this.showspinner = this.showspinner ? false : false;
+          this.dialog.open(ErrorDialogComponent, { data: e.message });
+        },
+      });
     }
   }
 
@@ -211,7 +217,7 @@ export class PurchaseDialogComponent implements OnInit {
         this.purchaseForm.controls.quantity.value! <= 0 ||
         this.purchaseForm.controls.itemAmount.value == null ||
         Number.isNaN(this.purchaseForm.controls.itemAmount.value) ||
-        parseInt(this.purchaseForm.controls.itemAmount.value!) < 0
+        this.purchaseForm.controls.itemAmount.value! < 0
       ) {
         this.dialog.open(ErrorDialogComponent, {
           data: 'Kindly fill the Item details properly!',
@@ -237,7 +243,7 @@ export class PurchaseDialogComponent implements OnInit {
               ? this.purchaseForm.value.quantity
               : 0,
             amount: this.purchaseForm.value.itemAmount
-              ? parseInt(this.purchaseForm.value.itemAmount)
+              ? this.purchaseForm.value.itemAmount
               : 0,
           };
           this.ELEMENT_DATA.push(newRow);
@@ -259,7 +265,7 @@ export class PurchaseDialogComponent implements OnInit {
       if (
         (this.purchaseForm.controls.selectedProductid?.value ?? 0) == 0 ||
         this.purchaseForm.value.quantity! <= 0 ||
-        parseInt(this.purchaseForm.controls.itemAmount.value!) < 0
+        this.purchaseForm.controls.itemAmount.value! < 0
       ) {
         this.dialog.open(ErrorDialogComponent, {
           data: 'Kindly fill the Item details properly!',
@@ -279,7 +285,7 @@ export class PurchaseDialogComponent implements OnInit {
           ? this.purchaseForm.value.quantity
           : 0,
         amount: this.purchaseForm.value.itemAmount
-          ? parseInt(this.purchaseForm.value.itemAmount)
+          ? this.purchaseForm.value.itemAmount
           : 0,
       };
 
@@ -296,9 +302,10 @@ export class PurchaseDialogComponent implements OnInit {
 
   calculateTotalAmount() {
     this.totalAmount = 0;
-    this.ELEMENT_DATA.forEach((item) => {
-      this.totalAmount += item.amount;
-    });
+    // this.ELEMENT_DATA.forEach((item) => {
+    //   this.totalAmount += item.amount;
+    // });
+    this.totalAmount = this.purchaseForm.controls.quantity.value ?? 0 * (this.purchaseForm.controls.itemAmount.value ?? 0)
   }
 
   deleteRow(row: purchaseItems) {
@@ -311,6 +318,7 @@ export class PurchaseDialogComponent implements OnInit {
     }));
     this.dataSource = [...this.ELEMENT_DATA];
     this.calculateTotalAmount();
+    this.purchaseForm.controls.quantity.setValue(this.serialNumbers.size);
   }
 
   newProdctChange() {
@@ -334,14 +342,41 @@ export class PurchaseDialogComponent implements OnInit {
       PurchaseDetails.purchaseDate.toString()
     );
     this.totalAmount = PurchaseDetails.totalAmount;
+    this.serialNumbers = new Set(PurchaseDetails.serialNumbers);
     this.purchaseForm.controls.Comment.setValue(PurchaseDetails.comment);
-    this.ELEMENT_DATA = PurchaseDetails.purchaseItems ?? [];
+    this.ELEMENT_DATA =  [{sl : 1,
+                          amount : this.dataSource[0].amount,
+                          quantity : this.dataSource[0].quantity,
+                          productId : this.dataSource[0].productId,
+                          productName : this.dataSource[0].productName }]
     this.dataSource = [...this.ELEMENT_DATA];
   }
 
-  onEditClick(){
+  onEditClick() {
     this.purchaseForm.enable();
     this.viewOnly = false;
     this.editMode = true;
+  }
+
+  removeSerial(sn: string) {
+    this.serialNumbers.delete(sn);
+    this.purchaseForm.controls.quantity.setValue(this.serialNumbers.size);
+    this.ELEMENT_DATA = [];
+    this.dataSource = [];
+  }
+
+  addSerial(): void {
+    const inputElement = document.getElementById(
+      'serialNumber'
+    ) as HTMLInputElement;
+
+    if (inputElement.value) {
+      this.serialNumbers.add(inputElement.value.trim());
+      this.purchaseForm.controls.quantity.setValue(this.serialNumbers.size);
+      this.ELEMENT_DATA = [];
+      this.dataSource = [];
+    }
+
+    inputElement.value = '';
   }
 }

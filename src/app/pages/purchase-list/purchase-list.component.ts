@@ -33,12 +33,12 @@ export class PurchaseListComponent implements OnInit {
     {
       field: 'purchaseDate',
       filter: true,
-      
+
       valueFormatter: (params: any): string => {
         const value = params.value;
         if (!value) return '—';
         return this.datePipe.transform(value, 'dd-MM-yyyy HH:mm') || '—';
-      }
+      },
     },
     { field: 'comment', filter: true },
   ];
@@ -54,12 +54,13 @@ export class PurchaseListComponent implements OnInit {
     private service: InventoryService,
     private dialog: MatDialog,
     private ngZone: NgZone
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   openDialog() {
     const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+      width: '70%',
       data: { supplierNames: this.uniqueSuppliersNames },
     });
 
@@ -108,6 +109,7 @@ export class PurchaseListComponent implements OnInit {
   onLinkClick(rowData: any) {
     this.ngZone.run(() => {
       const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+        width: '70%',
         data: { PuchaseDetails: rowData, readOnly: true },
       });
 
