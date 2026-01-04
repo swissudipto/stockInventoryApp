@@ -31,6 +31,19 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+/* PrimeNG Modules */
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { ChipsModule } from 'primeng/chips';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DialogModule } from 'primeng/dialog';
+import { PurchaseDialogngPrimeComponent } from './pages/Shared/purchase-dialogng-prime/purchase-dialogng-prime.component';
 
 export const MY_DATE_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -53,7 +66,8 @@ export const MY_DATE_FORMATS = {
     ErrorDialogComponent,
     SellDialogComponent,
     SellDetailsComponent,
-    LoginComponent
+    LoginComponent,
+    PurchaseDialogngPrimeComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +92,21 @@ export const MY_DATE_FORMATS = {
     MatIconModule,
     MatCheckboxModule,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    /* PrimeNG */
+    AutoCompleteModule,
+    CalendarModule,
+    CheckboxModule,
+    InputTextModule,
+    InputTextareaModule,
+    InputNumberModule,
+    ButtonModule,
+    TableModule,
+    ChipsModule,
+    ProgressSpinnerModule,
+    DialogModule
+    /* PrimeNG */
+
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
               { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },

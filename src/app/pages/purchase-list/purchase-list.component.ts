@@ -6,6 +6,7 @@ import { DatePipe, formatDate } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseDialogComponent } from '../Shared/purchase-dialog/purchase-dialog.component';
 import { ErrorDialogComponent } from '../Shared/error-dialog/error-dialog.component';
+import { PurchaseDialogngPrimeComponent } from '../Shared/purchase-dialogng-prime/purchase-dialogng-prime.component';
 
 @Component({
   selector: 'app-purchase-list',
@@ -59,7 +60,7 @@ export class PurchaseListComponent implements OnInit {
   ngOnInit(): void {}
 
   openDialog() {
-    const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+    const dialogRef = this.dialog.open(PurchaseDialogngPrimeComponent, {
       width: '70%',
       data: { supplierNames: this.uniqueSuppliersNames },
     });
@@ -108,7 +109,7 @@ export class PurchaseListComponent implements OnInit {
 
   onLinkClick(rowData: any) {
     this.ngZone.run(() => {
-      const dialogRef = this.dialog.open(PurchaseDialogComponent, {
+      const dialogRef = this.dialog.open(PurchaseDialogngPrimeComponent, {
         width: '70%',
         data: { PuchaseDetails: rowData, readOnly: true },
       });
