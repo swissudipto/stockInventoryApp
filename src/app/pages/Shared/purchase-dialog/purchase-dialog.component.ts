@@ -248,12 +248,12 @@ export class PurchaseDialogComponent implements OnInit {
           };
           this.ELEMENT_DATA.push(newRow);
           this.dataSource = [...this.ELEMENT_DATA];
+          this.calculateTotalAmount();
           this.purchaseForm.controls.productname.reset();
           this.purchaseForm.controls.quantity.reset();
           this.purchaseForm.controls.itemAmount.reset();
           this.purchaseForm.controls.newProductName.reset();
           this.purchaseForm.controls.isNewProduct.reset();
-          this.calculateTotalAmount();
         },
         error: (e) => {
           console.log(e);
@@ -291,12 +291,12 @@ export class PurchaseDialogComponent implements OnInit {
 
       this.ELEMENT_DATA.push(newRow);
       this.dataSource = [...this.ELEMENT_DATA];
+      this.calculateTotalAmount();
       this.purchaseForm.controls.productSearch.reset();
       this.purchaseForm.controls.quantity.reset();
       this.purchaseForm.controls.itemAmount.reset();
       this.purchaseForm.controls.newProductName.reset();
       this.purchaseForm.controls.isNewProduct.reset();
-      this.calculateTotalAmount();
     }
   }
 
@@ -305,7 +305,7 @@ export class PurchaseDialogComponent implements OnInit {
     // this.ELEMENT_DATA.forEach((item) => {
     //   this.totalAmount += item.amount;
     // });
-    this.totalAmount = this.purchaseForm.controls.quantity.value ?? 0 * (this.purchaseForm.controls.itemAmount.value ?? 0)
+    this.totalAmount = (this.purchaseForm.controls.quantity.value ?? 0) * (this.purchaseForm.controls.itemAmount.value ?? 0)
   }
 
   deleteRow(row: purchaseItems) {

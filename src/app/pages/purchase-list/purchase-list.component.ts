@@ -60,7 +60,7 @@ export class PurchaseListComponent implements OnInit {
   ngOnInit(): void {}
 
   openDialog() {
-    const dialogRef = this.dialog.open(PurchaseDialogngPrimeComponent, {
+    const dialogRef = this.dialog.open(PurchaseDialogComponent, {
       width: '70%',
       data: { supplierNames: this.uniqueSuppliersNames },
     });
@@ -109,7 +109,7 @@ export class PurchaseListComponent implements OnInit {
 
   onLinkClick(rowData: any) {
     this.ngZone.run(() => {
-      const dialogRef = this.dialog.open(PurchaseDialogngPrimeComponent, {
+      const dialogRef = this.dialog.open(PurchaseDialogComponent, {
         width: '70%',
         data: { PuchaseDetails: rowData, readOnly: true },
       });
