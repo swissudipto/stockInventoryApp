@@ -61,7 +61,7 @@ export class PurchaseDialogComponent implements OnInit {
     private service: InventoryService,
     private dialogRef: MatDialogRef<PurchaseDialogComponent>,
     private dialog: MatDialog
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.getAllProduct();
     this.filteredOptions =
@@ -85,7 +85,7 @@ export class PurchaseDialogComponent implements OnInit {
     }
   }
 
-  onSaveClick() {
+  async onSaveClick() {
     // this.purchaseForm.get('supplierName')?.setValue(this.supplierSearch.value);
     if (this.purchaseForm.invalid) {
       this.dialog.open(ErrorDialogComponent, {
@@ -94,6 +94,7 @@ export class PurchaseDialogComponent implements OnInit {
       return;
     }
     this.showspinner = true;
+    this.calculateTotalAmount();
 
     const newPurchase: purchase = {
       supplierAddress: this.purchaseForm.value.supplierAddress
@@ -114,10 +115,10 @@ export class PurchaseDialogComponent implements OnInit {
       id: 0,
       PurchaseId: 0,
       serialNumbers: [...this.serialNumbers],
-      productName: this.dataSource[0].productName,
-      productId: this.dataSource[0].productId,
-      quantity: this.dataSource[0].quantity,
-      amount: this.dataSource[0].amount,
+      productName: this.purchaseForm.value.productSearch ?? '',
+      productId: this.purchaseForm.value.selectedProductid ?? 0,
+      quantity: this.purchaseForm.value.quantity ?? 0,
+      amount: this.purchaseForm.value.itemAmount ??0,
       totalAmount: this.totalAmount
     };
 
@@ -137,6 +138,39 @@ export class PurchaseDialogComponent implements OnInit {
         },
       });
     } else {
+      if (this.purchaseForm.controls.isNewProduct.value === true) {
+        const newProduct: product = {
+          id: '',
+          productId: 0,
+          productName: this.purchaseForm.controls.newProductName.value
+            ? this.purchaseForm.controls.newProductName.value
+            : '',
+        };
+
+        this.service.saveNewProduct(newProduct).subscribe({
+          next: (v) => {
+            newPurchase.productId = v.productId;
+            newPurchase.productName = v.productName
+            this.service.savenewpurchase(newPurchase).subscribe({
+              next: (v) => {
+                console.log(v);
+                this.showspinner = this.showspinner ? false : false;
+                this.dialogRef.close();
+              },
+              error: (e) => {
+                console.log(e);
+                this.showspinner = this.showspinner ? false : false;
+                this.dialog.open(ErrorDialogComponent, { data: e.message });
+              },
+            });
+          },
+          error: (e) => {
+            console.log(e);
+            this.showspinner = this.showspinner ? false : false;
+            this.dialog.open(ErrorDialogComponent, { data: e.message + e.error });
+          },
+        });
+      }else{
       this.service.savenewpurchase(newPurchase).subscribe({
         next: (v) => {
           console.log(v);
@@ -149,6 +183,7 @@ export class PurchaseDialogComponent implements OnInit {
           this.dialog.open(ErrorDialogComponent, { data: e.message });
         },
       });
+    }
     }
   }
 
@@ -302,9 +337,6 @@ export class PurchaseDialogComponent implements OnInit {
 
   calculateTotalAmount() {
     this.totalAmount = 0;
-    // this.ELEMENT_DATA.forEach((item) => {
-    //   this.totalAmount += item.amount;
-    // });
     this.totalAmount = (this.purchaseForm.controls.quantity.value ?? 0) * (this.purchaseForm.controls.itemAmount.value ?? 0)
   }
 
@@ -344,12 +376,9 @@ export class PurchaseDialogComponent implements OnInit {
     this.totalAmount = PurchaseDetails.totalAmount;
     this.serialNumbers = new Set(PurchaseDetails.serialNumbers);
     this.purchaseForm.controls.Comment.setValue(PurchaseDetails.comment);
-    this.ELEMENT_DATA =  [{sl : 1,
-                          amount : this.dataSource[0].amount,
-                          quantity : this.dataSource[0].quantity,
-                          productId : this.dataSource[0].productId,
-                          productName : this.dataSource[0].productName }]
-    this.dataSource = [...this.ELEMENT_DATA];
+    this.purchaseForm.controls.itemAmount.setValue(PurchaseDetails.amount);
+    this.purchaseForm.controls.productSearch.setValue(PurchaseDetails.productName);
+    this.purchaseForm.controls.productname.setValue(PurchaseDetails.productName);
   }
 
   onEditClick() {
@@ -378,5 +407,6 @@ export class PurchaseDialogComponent implements OnInit {
     }
 
     inputElement.value = '';
+    this.totalAmount = (this.purchaseForm.value.quantity ?? 0) * (this.purchaseForm.value.itemAmount ?? 0);
   }
 }

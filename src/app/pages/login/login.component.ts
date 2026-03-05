@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: () => window.location.reload(),
         error: (err) => {
-          debugger;
           console.error('Error in Login', err);
           this.dialog.open(ErrorDialogComponent, {
             data: err['message'],
