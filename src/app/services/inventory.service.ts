@@ -59,4 +59,8 @@ export class InventoryService {
   editSell(newSell: sell): Observable<sell> {
     return this.client.post<sell>(`${this.apiUrl}/editSell`, newSell);
   }
+
+  getproductBySerial(serialNumber:string): Observable<any> {
+    return this.client.get(`${this.apiUrl}/getbyserialnumber?serialNumber=${serialNumber}`);
+  }
 }

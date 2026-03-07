@@ -14,7 +14,11 @@ export interface sell {
 export interface sellItem {
   sl: number;
   productName: string;
+  serial:string;
   productId: number;
   quantity: number;
+  taxableamount:number;
+  gstpercentage:number
+  gstamount: number;
   amount: number;
 }

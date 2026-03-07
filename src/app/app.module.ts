@@ -29,6 +29,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { PurchaseDialogngPrimeComponent } from './pages/Shared/purchase-dialogng-prime/purchase-dialogng-prime.component';
+import { MatRadioModule } from '@angular/material/radio';
+
 
 export const MY_DATE_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -51,7 +57,8 @@ export const MY_DATE_FORMATS = {
     ErrorDialogComponent,
     SellDialogComponent,
     SellDetailsComponent,
-    LoginComponent
+    LoginComponent,
+    PurchaseDialogngPrimeComponent
   ],
   imports: [
     BrowserModule,
@@ -74,11 +81,15 @@ export const MY_DATE_FORMATS = {
     MatTableModule,
     MatBadgeModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatListModule,
+    MatRadioModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-              { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
-              { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
+  { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
   ],
   bootstrap: [AppComponent],
 })
