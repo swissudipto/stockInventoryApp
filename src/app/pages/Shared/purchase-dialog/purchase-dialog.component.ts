@@ -50,11 +50,18 @@ export class PurchaseDialogComponent implements OnInit {
     'demo-Amount',
     'actions',
   ];
-  serialNumbers: Set<string> = new Set<string>();
+  serialNumbers: Map<string, boolean> = new Map<string, boolean>();
   ELEMENT_DATA: purchaseItems[] = [];
   totalAmount: number = 0;
   viewOnly: boolean = false;
   editMode: boolean = false;
+
+  get activeSerialNumbers(): string[] {
+    return [...this.serialNumbers.entries()]
+      .filter(([key, value]) => value === true)
+      .map(([key]) => key);
+  }
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -114,11 +121,11 @@ export class PurchaseDialogComponent implements OnInit {
         : '',
       id: 0,
       PurchaseId: 0,
-      serialNumbers: [...this.serialNumbers],
+      serialNumbers: Object.fromEntries(this.serialNumbers),
       productName: this.purchaseForm.value.productSearch ?? '',
       productId: this.purchaseForm.value.selectedProductid ?? 0,
       quantity: this.purchaseForm.value.quantity ?? 0,
-      amount: this.purchaseForm.value.itemAmount ??0,
+      amount: this.purchaseForm.value.itemAmount ?? 0,
       totalAmount: this.totalAmount
     };
 
@@ -170,20 +177,20 @@ export class PurchaseDialogComponent implements OnInit {
             this.dialog.open(ErrorDialogComponent, { data: e.message + e.error });
           },
         });
-      }else{
-      this.service.savenewpurchase(newPurchase).subscribe({
-        next: (v) => {
-          console.log(v);
-          this.showspinner = this.showspinner ? false : false;
-          this.dialogRef.close();
-        },
-        error: (e) => {
-          console.log(e);
-          this.showspinner = this.showspinner ? false : false;
-          this.dialog.open(ErrorDialogComponent, { data: e.message });
-        },
-      });
-    }
+      } else {
+        this.service.savenewpurchase(newPurchase).subscribe({
+          next: (v) => {
+            console.log(v);
+            this.showspinner = this.showspinner ? false : false;
+            this.dialogRef.close();
+          },
+          error: (e) => {
+            console.log(e);
+            this.showspinner = this.showspinner ? false : false;
+            this.dialog.open(ErrorDialogComponent, { data: e.message });
+          },
+        });
+      }
     }
   }
 
@@ -350,7 +357,7 @@ export class PurchaseDialogComponent implements OnInit {
     }));
     this.dataSource = [...this.ELEMENT_DATA];
     this.calculateTotalAmount();
-    this.purchaseForm.controls.quantity.setValue(this.serialNumbers.size);
+    this.purchaseForm.controls.quantity.setValue(this.activeSerialNumbers.length);
   }
 
   newProdctChange() {
@@ -374,11 +381,13 @@ export class PurchaseDialogComponent implements OnInit {
       PurchaseDetails.purchaseDate.toString()
     );
     this.totalAmount = PurchaseDetails.totalAmount;
-    this.serialNumbers = new Set(PurchaseDetails.serialNumbers);
+    this.serialNumbers = new Map<string, boolean>(Object.entries(PurchaseDetails.serialNumbers));
     this.purchaseForm.controls.Comment.setValue(PurchaseDetails.comment);
     this.purchaseForm.controls.itemAmount.setValue(PurchaseDetails.amount);
     this.purchaseForm.controls.productSearch.setValue(PurchaseDetails.productName);
     this.purchaseForm.controls.productname.setValue(PurchaseDetails.productName);
+    this.purchaseForm.controls.quantity.setValue(this.serialNumbers.size);
+    this.purchaseForm.controls.selectedProductid.setValue(PurchaseDetails.productId);
   }
 
   onEditClick() {
@@ -388,8 +397,12 @@ export class PurchaseDialogComponent implements OnInit {
   }
 
   removeSerial(sn: string) {
-    this.serialNumbers.delete(sn);
-    this.purchaseForm.controls.quantity.setValue(this.serialNumbers.size);
+    if (this.editMode) {
+      this.serialNumbers.set(sn, false)
+    } else {
+      this.serialNumbers.delete(sn);
+    }
+    this.purchaseForm.controls.quantity.setValue(this.activeSerialNumbers.length);
     this.ELEMENT_DATA = [];
     this.dataSource = [];
   }
@@ -400,13 +413,17 @@ export class PurchaseDialogComponent implements OnInit {
     ) as HTMLInputElement;
 
     if (inputElement.value) {
-      this.serialNumbers.add(inputElement.value.trim());
-      this.purchaseForm.controls.quantity.setValue(this.serialNumbers.size);
+      this.serialNumbers.set(inputElement.value.trim(), true);
+      this.purchaseForm.controls.quantity.setValue(this.activeSerialNumbers.length);
       this.ELEMENT_DATA = [];
       this.dataSource = [];
     }
 
     inputElement.value = '';
+    this.totalAmount = (this.purchaseForm.value.quantity ?? 0) * (this.purchaseForm.value.itemAmount ?? 0);
+  }
+
+  onPerItemCostChange() {
     this.totalAmount = (this.purchaseForm.value.quantity ?? 0) * (this.purchaseForm.value.itemAmount ?? 0);
   }
 }

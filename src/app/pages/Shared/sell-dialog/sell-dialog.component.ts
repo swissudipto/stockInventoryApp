@@ -28,6 +28,8 @@ export class SellDialogComponent {
     productId: new FormControl<number>(0),
     productName: new FormControl(''),
     Comment: new FormControl(''),
+    productSerial: new FormControl(''),
+    gstType: new FormControl('')
   });
 
   supplierSearch = new FormControl('');
@@ -40,7 +42,11 @@ export class SellDialogComponent {
   displayedColumns: string[] = [
     'demo-position',
     'demo-Product',
+    'demo-Serial',
     'demo-Quantity',
+    'demo-TaxableAmount',
+    'demo-GstPercentage',
+    'demo-Gst',
     'demo-Amount',
     'actions',
   ];
@@ -49,6 +55,7 @@ export class SellDialogComponent {
   viewOnly: boolean = false;
   editMode: boolean = false;
   inStockProductList: stock[] = [];
+  searchText: string = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -163,8 +170,8 @@ export class SellDialogComponent {
       this.sellForm.value.productName == '' ||
       this.sellForm.value.productId == null ||
       this.sellForm.value.productId < 1 ||
-      this.sellForm.value.quantity == null ||
-      this.sellForm.value.quantity < 1 ||
+      this.sellForm.value.productSerial == null ||
+      this.sellForm.value.productSerial == '' ||
       this.sellForm.value.sellAmount == null ||
       this.sellForm.value.sellAmount == '' ||
       Number.isNaN(this.sellForm.value.sellAmount)
@@ -178,8 +185,8 @@ export class SellDialogComponent {
     // Duplicate Item Check
     for (const element of this.ELEMENT_DATA) {
       if (
-        element.productName.trim().toUpperCase() ===
-        (this.sellForm.controls.productName?.value ?? '').trim().toUpperCase()
+        element.serial.trim().toUpperCase() ===
+        (this.sellForm.controls.productSerial?.value ?? '').trim().toUpperCase()
       ) {
         this.dialog.open(ErrorDialogComponent, {
           data: 'The Item is already added!',
@@ -187,6 +194,14 @@ export class SellDialogComponent {
         return;
       }
     }
+
+    var taxableamount = parseInt(this.sellForm.value.sellAmount) / 
+                        (1 + parseInt(this.sellForm.value.gstType ?? '0') / 100);
+    var gstamount = parseInt(this.sellForm.value.sellAmount) - taxableamount;
+
+    //Rounding Off to 2 decimal point
+    taxableamount = parseFloat(taxableamount.toFixed(2));
+    gstamount = parseFloat(gstamount.toFixed(2));
 
     const newSellRow: sellItem = {
       sl: this.ELEMENT_DATA.length + 1,
@@ -196,10 +211,18 @@ export class SellDialogComponent {
       productId: this.sellForm.value.productId
         ? this.sellForm.value.productId
         : 0,
-      quantity: this.sellForm.value.quantity ? this.sellForm.value.quantity : 0,
+      quantity: 1,
       amount: this.sellForm.value.sellAmount
         ? parseInt(this.sellForm.value.sellAmount)
         : 0,
+      serial: this.sellForm.value.productSerial
+        ? this.sellForm.value.productSerial
+        : '',
+      gstamount: gstamount,
+      gstpercentage: parseInt(this.sellForm.value.gstType ?? '0')
+        ? parseInt(this.sellForm.value.gstType ?? '0')
+        : 0,
+      taxableamount: taxableamount,
     };
     this.ELEMENT_DATA.push(newSellRow);
     this.dataSource = [...this.ELEMENT_DATA];
@@ -207,6 +230,8 @@ export class SellDialogComponent {
     this.sellForm.controls.productId.reset();
     this.sellForm.controls.quantity.reset();
     this.sellForm.controls.sellAmount.reset();
+    this.sellForm.controls.productSerial.reset();
+    //this.sellForm.controls.gstType.reset();
     this.calculateTotalAmount();
   }
 
@@ -240,7 +265,7 @@ export class SellDialogComponent {
     this.pdfservice.generateSellInvoicePdf(this.data.sellDetails);
   }
 
-    getInStockProducts() {
+  getInStockProducts() {
     this.service.getallStock().subscribe({
       next: (v) => {
         this.inStockProductList = v;
@@ -258,5 +283,26 @@ export class SellDialogComponent {
     this.sellForm.enable();
     this.viewOnly = false;
     this.editMode = true;
+  }
+
+  searchProduct() {
+    this.service.getproductBySerial(this.sellForm.value.productSerial ?? '').subscribe({
+      next: (v) => {
+        console.warn(v);
+        this.sellForm.controls.sellAmount.setValue(v.suggestedSellingPrice);
+        this.sellForm.controls.productName.setValue(v.productName);
+        this.sellForm.controls.productId.setValue(v.productId);
+        this.sellForm.controls.productSerial.setValue(v.serial);
+
+      },
+      error: (e) => {
+        console.warn(e);
+        this.sellForm.controls.productSerial.reset();
+      }
+    })
+  }
+
+  onPaymentChange() {
+
   }
 }

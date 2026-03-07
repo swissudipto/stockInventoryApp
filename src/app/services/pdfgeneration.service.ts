@@ -8,7 +8,7 @@ import { autoTable } from 'jspdf-autotable';
   providedIn: 'root',
 })
 export class PdfgenerationService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   generateInvoicePdf() {
     const doc = new jsPDF();
@@ -50,7 +50,7 @@ export class PdfgenerationService {
     doc.save(`${'INV001'}.pdf`);
   }
 
-  generateSellInvoicePdf(sellDetails: any) {
+  generateSellInvoicePdf_old(sellDetails: any) {
     const doc = new jsPDF();
 
     const storeName = 'Ghosh Electric';
@@ -151,4 +151,170 @@ export class PdfgenerationService {
     // Save
     doc.save(`${sellDetails.invoiceNo}.pdf`);
   }
+
+  generateSellInvoicePdf(sellDetails: any) {
+
+    const doc = new jsPDF();
+
+    const lineHeight = 8;
+    let currentY = 20;
+
+    // Header
+    doc.setFont("times", "bold");
+    doc.setFontSize(20);
+    doc.text("Ghosh Electric", 105, currentY, { align: "center" });
+
+    currentY += lineHeight;
+
+    doc.setFontSize(14);
+    doc.text("INVOICE", 105, currentY, { align: "center" });
+
+    currentY += lineHeight * 2;
+
+    doc.setFontSize(11);
+
+    // Invoice + Date
+    doc.setFont("times", "bold");
+    doc.text("Invoice No:", 14, currentY);
+    doc.setFont("times", "normal");
+    doc.text(`${sellDetails.invoiceNo}`, 40, currentY);
+
+    doc.setFont("times", "bold");
+    doc.text("Date:", 140, currentY);
+    doc.setFont("times", "normal");
+    doc.text(
+      `${new Date(sellDetails.transactionDateTime).toLocaleString()}`,
+      155,
+      currentY
+    );
+
+    currentY += lineHeight;
+
+    // Customer Name
+    doc.setFont("times", "bold");
+    doc.text("Customer Name:", 14, currentY);
+    doc.setFont("times", "normal");
+    doc.text(`${sellDetails.customerName || "N/A"}`, 45, currentY);
+
+    currentY += lineHeight;
+
+    // Address
+    doc.setFont("times", "bold");
+    doc.text("Address:", 14, currentY);
+    doc.setFont("times", "normal");
+    doc.text(`${sellDetails.customerAddress || "N/A"}`, 35, currentY);
+
+    currentY += lineHeight;
+
+    // Phone
+    doc.setFont("times", "bold");
+    doc.text("Phone:", 14, currentY);
+    doc.setFont("times", "normal");
+    doc.text(`${sellDetails.phoneNumber || "N/A"}`, 35, currentY);
+
+    currentY += lineHeight;
+
+    // Comment
+    if (sellDetails.comment) {
+      doc.setFont("times", "bold");
+      doc.text("Comment:", 14, currentY);
+      doc.setFont("times", "normal");
+      doc.text(`${sellDetails.comment}`, 38, currentY);
+      currentY += lineHeight;
+    }
+
+    currentY += 5;
+
+    // Table
+    autoTable(doc, {
+      startY: currentY,
+
+      head: [[
+        "Sl",
+        "Product Name",
+        "Serial",
+        "Qty",
+        "Taxable",
+        "GST %",
+        "GST",
+        "Total"
+      ]],
+
+      body: sellDetails.sellItems
+        .sort((a: any, b: any) => a.sl - b.sl)
+        .map((item: any) => [
+          item.sl,
+          item.productName,
+          item.serial || "-",
+          item.quantity,
+          item.taxableamount.toFixed(2),
+          item.gstpercentage + "%",
+          item.gstamount.toFixed(2),
+          item.amount.toFixed(2)
+        ]),
+
+      theme: "plain",
+
+      styles: {
+        font: "times",
+        fontSize: 10,
+        halign: "center"
+      },
+
+      headStyles: {
+        fontStyle: "bold",
+        lineWidth: 0.3,
+        lineColor: [0, 0, 0]
+      },
+
+      columnStyles: {
+        0: { cellWidth: 12 },
+        1: { cellWidth: 50, halign: "left" },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 12 },
+        4: { cellWidth: 22 },
+        5: { cellWidth: 15 },
+        6: { cellWidth: 22 },
+        7: { cellWidth: 22 }
+      },
+
+      didDrawCell: function (data) {
+        if (data.section === 'head') {
+          doc.line(
+            data.cell.x,
+            data.cell.y + data.cell.height,
+            data.cell.x + data.cell.width,
+            data.cell.y + data.cell.height
+          );
+        }
+      }
+
+    });
+
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+
+    // Line above total
+    doc.line(120, finalY - 4, 195, finalY - 4);
+
+    // Total Amount
+    doc.setFont("times", "bold");
+    doc.setFontSize(12);
+
+    doc.text(
+      `Total Amount : ₹ ${sellDetails.totalAmount.toFixed(2)}`,
+      185,
+      finalY,
+      { align: "right" }
+    );
+
+    // Footer
+    doc.setFont("times", "normal");
+    doc.setFontSize(10);
+    doc.text("Thank you for your purchase!", 105, 285, { align: "center" });
+
+    // Print
+    doc.autoPrint();
+    window.open(doc.output("bloburl"), "_blank");
+  }
+
 }

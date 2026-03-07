@@ -8,7 +8,7 @@ export interface purchase {
     supplierContactNumber: string;
     supplierAddress: string;
     comment: string;
-    serialNumbers: string[];
+    serialNumbers: Record<string, boolean>;
     productName: string;
     productId: number;
     quantity: number;

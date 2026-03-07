@@ -1,5 +1,5 @@
 <h2 class="title" mat-dialog-tittle *ngIf="!viewOnly"><span><i class="bi bi-handbag"></i></span>&nbsp;New Purchase</h2>
-<h2 class="title" mat-dialog-tittle *ngIf="viewOnly">Purchase Details</h2>
+<h2 class="title" mat-dialog-tittle *ngIf="viewOnly"><span><i class="bi bi-handbag"></i></span>&nbsp;Purchase Details</h2>
 <form mat-dialog-content [formGroup]="purchaseForm">
   <div class="row">
     <div class="col-md-8">
@@ -62,7 +62,7 @@
       &nbsp;
       <mat-form-field appearance="outline">
         <mat-label for="itemAmount">Per Item Cost</mat-label>
-        <input matInput type="number" id="itemAmount" formControlName="itemAmount" />
+        <input matInput type="number" id="itemAmount" (change)="onPerItemCostChange()" formControlName="itemAmount" />
       </mat-form-field>
       &nbsp;
       <!-- <button class="btn btn-outline-success" (click)="addNewRow()" [disabled]="ELEMENT_DATA.length > 0">
@@ -123,7 +123,7 @@
         <mat-icon>add</mat-icon>
       </button>
           <mat-chip-set #chipset aria-label="Serial numbers">
-            <mat-chip *ngFor="let sn of serialNumbers" removable="true" [disabled]="viewOnly"
+            <mat-chip *ngFor="let sn of activeSerialNumbers" removable="true" [disabled]="viewOnly"
               (removed)="removeSerial(sn)">
               {{ sn }}
 

@@ -89,6 +89,7 @@ purchaseForm = new FormGroup({
     }
     this.showspinner = true;
 
+    const newLocal = [];
     const newPurchase: purchase = {
       supplierAddress: this.purchaseForm.value.supplierAddress
         ? this.purchaseForm.value.supplierAddress
@@ -107,7 +108,7 @@ purchaseForm = new FormGroup({
         : '',
       id: 0,
       PurchaseId: 0,
-      serialNumbers: [...this.serialNumbers],
+      serialNumbers: Object.fromEntries([]),
       productName: this.dataSource[0].productName,
       productId: this.dataSource[0].productId,
       quantity: this.dataSource[0].quantity,
@@ -336,7 +337,7 @@ purchaseForm = new FormGroup({
       PurchaseDetails.purchaseDate.toString()
     );
     this.totalAmount = PurchaseDetails.totalAmount;
-    this.serialNumbers = new Set(PurchaseDetails.serialNumbers);
+    this.serialNumbers = new Set();
     this.purchaseForm.controls.Comment.setValue(PurchaseDetails.comment);
     this.ELEMENT_DATA =  [{sl : 1,
                           amount : this.dataSource[0].amount,
