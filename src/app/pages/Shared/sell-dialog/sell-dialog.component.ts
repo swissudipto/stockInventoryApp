@@ -195,12 +195,13 @@ export class SellDialogComponent {
       }
     }
 
-    var taxableamount = parseInt(this.sellForm.value.sellAmount) / 
-                        (1 + parseInt(this.sellForm.value.gstType ?? '0') / 100);
-    var gstamount = parseInt(this.sellForm.value.sellAmount) - taxableamount;
+    var gstamount =  parseInt(this.sellForm.value.sellAmount)*
+                     (parseInt(this.sellForm.value.gstType ?? '0')/100);
+    var totalamount = parseInt(this.sellForm.value.sellAmount) + gstamount;
+
 
     //Rounding Off to 2 decimal point
-    taxableamount = parseFloat(taxableamount.toFixed(2));
+    totalamount = parseFloat(totalamount.toFixed(2));
     gstamount = parseFloat(gstamount.toFixed(2));
 
     const newSellRow: sellItem = {
@@ -212,9 +213,7 @@ export class SellDialogComponent {
         ? this.sellForm.value.productId
         : 0,
       quantity: 1,
-      amount: this.sellForm.value.sellAmount
-        ? parseInt(this.sellForm.value.sellAmount)
-        : 0,
+      amount: totalamount,
       serial: this.sellForm.value.productSerial
         ? this.sellForm.value.productSerial
         : '',
@@ -222,7 +221,7 @@ export class SellDialogComponent {
       gstpercentage: parseInt(this.sellForm.value.gstType ?? '0')
         ? parseInt(this.sellForm.value.gstType ?? '0')
         : 0,
-      taxableamount: taxableamount,
+      taxableamount: parseInt(this.sellForm.value.sellAmount),
     };
     this.ELEMENT_DATA.push(newSellRow);
     this.dataSource = [...this.ELEMENT_DATA];
