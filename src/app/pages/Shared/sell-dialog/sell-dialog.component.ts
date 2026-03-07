@@ -288,7 +288,6 @@ export class SellDialogComponent {
   searchProduct() {
     this.service.getproductBySerial(this.sellForm.value.productSerial ?? '').subscribe({
       next: (v) => {
-        console.warn(v);
         this.sellForm.controls.sellAmount.setValue(v.suggestedSellingPrice);
         this.sellForm.controls.productName.setValue(v.productName);
         this.sellForm.controls.productId.setValue(v.productId);
@@ -296,7 +295,6 @@ export class SellDialogComponent {
 
       },
       error: (e) => {
-        console.warn(e);
         this.sellForm.controls.productSerial.reset();
       }
     })
